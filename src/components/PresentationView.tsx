@@ -1,17 +1,31 @@
 'use client';
 
 import React from 'react';
-import { usePresentation } from './PresentationContext';
+import { usePresentation, StudentCategory } from './PresentationContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Maximize, Minimize, ChevronLeft, ChevronRight, Home, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface PresentationViewProps {
-    slides: React.ReactNode[];
+    slidesByCategory: Record<StudentCategory, React.ReactNode[]>;
 }
 
-export default function PresentationView({ slides }: PresentationViewProps) {
-    const { currentSlide, totalSlides, nextSlide, prevSlide, toggleFullScreen, isFullScreen } = usePresentation();
+const categoryLabels: Record<StudentCategory, string> = {
+    school: 'School Students',
+    ug: 'UG Students',
+    pg: 'PG Students',
+    research: 'Research Scholars'
+};
+
+export default function PresentationView({ slidesByCategory }: PresentationViewProps) {
+    const { currentSlide, activeCategory, setActiveCategory, nextSlide, prevSlide, toggleFullScreen, isFullScreen } = usePresentation();
+
+    const currentSlides = slidesByCategory[activeCategory];
+    const totalSlides = currentSlides.length;
+
+    const handleCategoryChange = (category: StudentCategory) => {
+        setActiveCategory(category);
+    };
 
     return (
         <div className={cn(
@@ -20,27 +34,47 @@ export default function PresentationView({ slides }: PresentationViewProps) {
         )}>
             {/* Header / Controls */}
             {!isFullScreen && (
-                <header className="fixed top-0 left-0 right-0 z-50 h-16 glass flex items-center justify-between px-6 border-b border-white/10">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/20">
-                            M
+                <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
+                    <div className="h-16 flex items-center justify-between px-6">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/20">
+                                M
+                            </div>
+                            <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+                                Math Explorer
+                            </h1>
                         </div>
-                        <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-                            Math Explorer
-                        </h1>
+
+                        <div className="flex items-center gap-4">
+                            <span className="text-sm font-medium text-muted-foreground">
+                                Slide {currentSlide + 1} of {totalSlides}
+                            </span>
+                            <button
+                                onClick={toggleFullScreen}
+                                className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                                title="Full Screen (F)"
+                            >
+                                <Maximize size={20} />
+                            </button>
+                        </div>
                     </div>
 
-                    <div className="flex items-center gap-4">
-                        <span className="text-sm font-medium text-muted-foreground">
-                            Slide {currentSlide + 1} of {totalSlides}
-                        </span>
-                        <button
-                            onClick={toggleFullScreen}
-                            className="p-2 hover:bg-white/10 rounded-full transition-colors"
-                            title="Full Screen (F)"
-                        >
-                            <Maximize size={20} />
-                        </button>
+                    {/* Category Tabs */}
+                    <div className="flex items-center gap-2 px-6 pb-3">
+                        {(Object.keys(categoryLabels) as StudentCategory[]).map((category) => (
+                            <button
+                                key={category}
+                                onClick={() => handleCategoryChange(category)}
+                                className={cn(
+                                    "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                                    activeCategory === category
+                                        ? "bg-primary text-white shadow-lg shadow-primary/20"
+                                        : "bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-foreground"
+                                )}
+                            >
+                                {categoryLabels[category]}
+                            </button>
+                        ))}
                     </div>
                 </header>
             )}
@@ -48,19 +82,19 @@ export default function PresentationView({ slides }: PresentationViewProps) {
             {/* Main Slide Area */}
             <main className={cn(
                 "flex-1 flex flex-col items-center justify-center overflow-hidden w-full",
-                !isFullScreen && "pt-16 pb-20"
+                !isFullScreen && "pt-28 pb-20"
             )}>
                 <div className="w-full max-w-7xl px-8 h-full flex flex-col justify-center">
                     <AnimatePresence mode="wait">
                         <motion.div
-                            key={currentSlide}
+                            key={`${activeCategory}-${currentSlide}`}
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -20 }}
                             transition={{ duration: 0.4, ease: "easeOut" }}
                             className="w-full"
                         >
-                            {slides[currentSlide]}
+                            {currentSlides[currentSlide]}
                         </motion.div>
                     </AnimatePresence>
                 </div>

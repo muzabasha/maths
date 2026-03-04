@@ -2,10 +2,14 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
+export type StudentCategory = 'school' | 'ug' | 'pg' | 'research';
+
 interface PresentationContextType {
     currentSlide: number;
     totalSlides: number;
     isFullScreen: boolean;
+    activeCategory: StudentCategory;
+    setActiveCategory: (category: StudentCategory) => void;
     nextSlide: () => void;
     prevSlide: () => void;
     goToSlide: (index: number) => void;
@@ -20,6 +24,7 @@ export function PresentationProvider({ children, totalSlides }: { children: Reac
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [revealStep, setRevealStep] = useState(0);
+    const [activeCategory, setActiveCategory] = useState<StudentCategory>('school');
 
     const nextSlide = () => {
         if (currentSlide < totalSlides - 1) {
@@ -44,6 +49,12 @@ export function PresentationProvider({ children, totalSlides }: { children: Reac
 
     const nextStep = () => {
         setRevealStep(prev => prev + 1);
+    };
+
+    const handleSetActiveCategory = (category: StudentCategory) => {
+        setActiveCategory(category);
+        setCurrentSlide(0);
+        setRevealStep(0);
     };
 
     const toggleFullScreen = () => {
@@ -86,6 +97,8 @@ export function PresentationProvider({ children, totalSlides }: { children: Reac
             currentSlide,
             totalSlides,
             isFullScreen,
+            activeCategory,
+            setActiveCategory: handleSetActiveCategory,
             nextSlide,
             prevSlide,
             goToSlide,

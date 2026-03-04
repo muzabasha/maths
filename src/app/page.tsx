@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { PresentationProvider } from '@/components/PresentationContext';
+import { PresentationProvider, StudentCategory } from '@/components/PresentationContext';
 import PresentationView from '@/components/PresentationView';
 import { SlideIntro, SlideLemonadeStory } from '@/components/slides/SlideFoundations';
 import { SlideFromWordsToEquation } from '@/components/slides/SlideModeling';
@@ -12,7 +12,31 @@ import { SlideSolvingStepByStep, SlideComparison } from '@/components/slides/Sli
 import { SlideErrorAnalysis, SlideConclusion } from '@/components/slides/SlideOutcome';
 import { QuizSlide } from '@/components/slides/QuizSlide';
 
-const SLIDES = [
+// School Students - Basic concepts
+const SCHOOL_SLIDES = [
+  <SlideIntro key="intro" />,
+  <SlideLemonadeStory key="lemonade" />,
+  <SlideFromWordsToEquation key="modeling" />,
+  <SlidePolynomialRecipe key="polynomial" />,
+  <QuizSlide key="quiz" />,
+  <SlideConclusion key="conclusion" />,
+];
+
+// UG Students - Intermediate concepts
+const UG_SLIDES = [
+  <SlideIntro key="intro" />,
+  <SlideLemonadeStory key="lemonade" />,
+  <SlideFromWordsToEquation key="modeling" />,
+  <SlidePolynomialRecipe key="polynomial" />,
+  <SlidePowerOfX key="powers" />,
+  <SlideDifferentiation key="diff" />,
+  <SlideSolvingStepByStep key="solve" />,
+  <QuizSlide key="quiz" />,
+  <SlideConclusion key="conclusion" />,
+];
+
+// PG Students - Advanced concepts
+const PG_SLIDES = [
   <SlideIntro key="intro" />,
   <SlideLemonadeStory key="lemonade" />,
   <SlideFromWordsToEquation key="modeling" />,
@@ -27,10 +51,33 @@ const SLIDES = [
   <SlideConclusion key="conclusion" />,
 ];
 
+// Research Scholars - All concepts including advanced analysis
+const RESEARCH_SLIDES = [
+  <SlideIntro key="intro" />,
+  <SlideLemonadeStory key="lemonade" />,
+  <SlideFromWordsToEquation key="modeling" />,
+  <SlidePolynomialRecipe key="polynomial" />,
+  <SlidePowerOfX key="powers" />,
+  <SlideDifferentiation key="diff" />,
+  <SlideSolvingStepByStep key="solve" />,
+  <SlideErrorAnalysis key="error" />,
+  <SlideComparison key="compare" />,
+  <SlideStability key="stability" />,
+  <QuizSlide key="quiz" />,
+  <SlideConclusion key="conclusion" />,
+];
+
+const SLIDES_BY_CATEGORY: Record<StudentCategory, React.ReactNode[]> = {
+  school: SCHOOL_SLIDES,
+  ug: UG_SLIDES,
+  pg: PG_SLIDES,
+  research: RESEARCH_SLIDES,
+};
+
 export default function Home() {
   return (
-    <PresentationProvider totalSlides={SLIDES.length}>
-      <PresentationView slides={SLIDES} />
+    <PresentationProvider totalSlides={SCHOOL_SLIDES.length}>
+      <PresentationView slidesByCategory={SLIDES_BY_CATEGORY} />
     </PresentationProvider>
   );
 }
