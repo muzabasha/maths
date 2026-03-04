@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { PresentationProvider, StudentCategory } from '@/components/PresentationContext';
 import PresentationView from '@/components/PresentationView';
 import { SlideIntro, SlideLemonadeStory } from '@/components/slides/SlideFoundations';
@@ -12,79 +12,64 @@ import { SlideSolvingStepByStep, SlideComparison } from '@/components/slides/Sli
 import { SlideErrorAnalysis, SlideConclusion } from '@/components/slides/SlideOutcome';
 import { QuizSlide } from '@/components/slides/QuizSlide';
 
-// School Students - Basic concepts
-const SCHOOL_SLIDES = [
-  <SlideIntro key="intro" />,
-  <SlideLemonadeStory key="lemonade" />,
-  <SlideFromWordsToEquation key="modeling" />,
-  <SlidePolynomialRecipe key="polynomial" />,
-  <QuizSlide key="quiz" category="school" />,
-  <SlideConclusion key="conclusion" />,
-];
+function buildSlides(category: StudentCategory): React.ReactNode[] {
+  const prefix = category;
 
-// UG Students - Intermediate concepts
-const UG_SLIDES = [
-  <SlideIntro key="intro" />,
-  <SlideLemonadeStory key="lemonade" />,
-  <SlideFromWordsToEquation key="modeling" />,
-  <SlidePolynomialRecipe key="polynomial" />,
-  <SlidePowerOfX key="powers" />,
-  <SlideDifferentiation key="diff" />,
-  <SlideSolvingStepByStep key="solve" />,
-  <QuizSlide key="quiz" category="ug" />,
-  <SlideConclusion key="conclusion" />,
-];
+  const common = [
+    <SlideIntro key={`${prefix}-intro`} />,
+    <SlideLemonadeStory key={`${prefix}-lemonade`} />,
+    <SlideFromWordsToEquation key={`${prefix}-modeling`} />,
+    <SlidePolynomialRecipe key={`${prefix}-polynomial`} />,
+  ];
 
-// PG Students - Advanced concepts
-const PG_SLIDES = [
-  <SlideIntro key="intro" />,
-  <SlideLemonadeStory key="lemonade" />,
-  <SlideFromWordsToEquation key="modeling" />,
-  <SlidePolynomialRecipe key="polynomial" />,
-  <SlidePowerOfX key="powers" />,
-  <SlideDifferentiation key="diff" />,
-  <SlideSolvingStepByStep key="solve" />,
-  <SlideErrorAnalysis key="error" />,
-  <SlideComparison key="compare" />,
-  <SlideStability key="stability" />,
-  <QuizSlide key="quiz" category="pg" />,
-  <SlideConclusion key="conclusion" />,
-];
+  const intermediate = [
+    <SlidePowerOfX key={`${prefix}-powers`} />,
+    <SlideDifferentiation key={`${prefix}-diff`} />,
+    <SlideSolvingStepByStep key={`${prefix}-solve`} />,
+  ];
 
-// Research Scholars - All concepts including advanced analysis
-const RESEARCH_SLIDES = [
-  <SlideIntro key="intro" />,
-  <SlideLemonadeStory key="lemonade" />,
-  <SlideFromWordsToEquation key="modeling" />,
-  <SlidePolynomialRecipe key="polynomial" />,
-  <SlidePowerOfX key="powers" />,
-  <SlideDifferentiation key="diff" />,
-  <SlideSolvingStepByStep key="solve" />,
-  <SlideErrorAnalysis key="error" />,
-  <SlideComparison key="compare" />,
-  <SlideStability key="stability" />,
-  <QuizSlide key="quiz" category="research" />,
-  <SlideConclusion key="conclusion" />,
-];
+  const advanced = [
+    <SlideErrorAnalysis key={`${prefix}-error`} />,
+    <SlideComparison key={`${prefix}-compare`} />,
+    <SlideStability key={`${prefix}-stability`} />,
+  ];
 
-const SLIDES_BY_CATEGORY: Record<StudentCategory, React.ReactNode[]> = {
-  school: SCHOOL_SLIDES,
-  ug: UG_SLIDES,
-  pg: PG_SLIDES,
-  research: RESEARCH_SLIDES,
-};
+  const quiz = <QuizSlide key={`${prefix}-quiz`} category={category} />;
+  const conclusion = <SlideConclusion key={`${prefix}-conclusion`} />;
+
+  switch (category) {
+    case 'school':
+      return [...common, quiz, conclusion];
+    case 'ug':
+      return [...common, ...intermediate, quiz, conclusion];
+    case 'pg':
+    case 'research':
+      return [...common, ...intermediate, ...advanced, quiz, conclusion];
+  }
+}
 
 const SLIDE_COUNTS: Record<StudentCategory, number> = {
-  school: SCHOOL_SLIDES.length,
-  ug: UG_SLIDES.length,
-  pg: PG_SLIDES.length,
-  research: RESEARCH_SLIDES.length,
+  school: buildSlides('school').length,
+  ug: buildSlides('ug').length,
+  pg: buildSlides('pg').length,
+  research: buildSlides('research').length,
 };
 
 export default function Home() {
   return (
     <PresentationProvider slideCounts={SLIDE_COUNTS}>
-      <PresentationView slidesByCategory={SLIDES_BY_CATEGORY} />
+      <SlidesRenderer />
     </PresentationProvider>
   );
+}
+
+function SlidesRenderer() {
+  const slidesByCategory = useMemo(() => ({
+    school: buildSlides('school'),
+    ug: buildSlides('ug'),
+    pg: buildSlides('pg'),
+    research: buildSlides('research'),
+  }), []);
+
+  return <PresentationView slidesByCategory={slidesByCategory} />;
 }

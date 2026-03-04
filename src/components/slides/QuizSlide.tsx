@@ -30,7 +30,7 @@ export function QuizSlide({ category }: QuizSlideProps) {
             subtitle={subtitles[category]}
         >
             <div className="py-8">
-                <QuizComponent category={category} />
+                <QuizComponent key={category} category={category} />
             </div>
         </Slide>
     );
