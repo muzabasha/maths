@@ -1,36 +1,33 @@
 'use client';
 
-import React from 'react';
 import Slide from '@/components/Slide';
 import QuizComponent from '@/components/Quiz';
-import { StudentCategory } from '@/components/PresentationContext';
+import { usePresentation, StudentCategory } from '@/components/PresentationContext';
 
-interface QuizSlideProps {
-    category: StudentCategory;
-}
+const titles: Record<StudentCategory, string> = {
+    school: 'The Knowledge Challenge 🎮',
+    ug: 'Test Your Understanding 🎯',
+    pg: 'Advanced Concepts Quiz 🧠',
+    research: 'Expert Level Challenge 🔬'
+};
 
-export function QuizSlide({ category }: QuizSlideProps) {
-    const titles: Record<StudentCategory, string> = {
-        school: 'The Knowledge Challenge 🎮',
-        ug: 'Test Your Understanding 🎯',
-        pg: 'Advanced Concepts Quiz 🧠',
-        research: 'Expert Level Challenge 🔬'
-    };
+const subtitles: Record<StudentCategory, string> = {
+    school: 'Test your skills before the final reward!',
+    ug: 'Apply what you\'ve learned!',
+    pg: 'Challenge your advanced knowledge!',
+    research: 'Demonstrate your expertise!'
+};
 
-    const subtitles: Record<StudentCategory, string> = {
-        school: 'Test your skills before the final reward!',
-        ug: 'Apply what you\'ve learned!',
-        pg: 'Challenge your advanced knowledge!',
-        research: 'Demonstrate your expertise!'
-    };
+export function QuizSlide() {
+    const { activeCategory } = usePresentation();
 
     return (
         <Slide
-            title={titles[category]}
-            subtitle={subtitles[category]}
+            title={titles[activeCategory]}
+            subtitle={subtitles[activeCategory]}
         >
             <div className="py-8">
-                <QuizComponent key={category} category={category} />
+                <QuizComponent />
             </div>
         </Slide>
     );
