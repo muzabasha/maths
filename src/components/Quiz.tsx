@@ -793,6 +793,14 @@ export default function QuizComponent({ category }: QuizComponentProps) {
 
     return (
         <div className="max-w-4xl mx-auto space-y-12">
+            {/* Category Indicator for debugging */}
+            <div className="text-center text-sm text-primary/60 uppercase tracking-wider">
+                {category === 'school' && '📚 School Level'}
+                {category === 'ug' && '🎓 Undergraduate Level'}
+                {category === 'pg' && '🔬 Postgraduate Level'}
+                {category === 'research' && '🧪 Research Scholar Level'}
+            </div>
+
             <div className="space-y-4">
                 <div className="flex justify-between items-end">
                     <span className="text-primary font-bold text-xl">Question {currentIdx + 1}/{QUESTIONS.length}</span>
