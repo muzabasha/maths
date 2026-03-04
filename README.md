@@ -3,15 +3,18 @@
 An interactive, projector-friendly web application that teaches applied mathematics concepts to 10th standard students using real-life analogies, interactive visualizations, and gamified quizzes.
 
 ## 🎯 Target Audience
-- 10th Standard Students
-- Resource Persons / Teachers (Projector Mode)
-- Research Scholars (Applied Mathematics)
+- **School Students** - Basic mathematical concepts with simple analogies
+- **UG Students** - Intermediate calculus and optimization concepts
+- **PG Students** - Advanced optimization and numerical methods
+- **Research Scholars** - Expert-level algorithms and theoretical foundations
 
 ## ✨ Features
 
+- **Multi-Level Content** — Separate tabs for School, UG, PG, and Research Scholar students
+- **Adaptive Quizzes** — 20+ questions per category with difficulty-appropriate content
 - **Full-Screen Projector Mode** — Press `F` or click the Presentation Mode button
 - **Keyboard Navigation** — `→` Next slide, `←` Previous slide, `Space` to reveal steps
-- **12 Interactive Slides** — Covering polynomials, optimization, derivatives, and more
+- **Interactive Slides** — Covering polynomials, optimization, derivatives, and more
 - **Real-time Graphs** — Powered by Plotly.js with interactive sliders
 - **Gamified Quiz** — Instant feedback with analogies and explanations
 - **Celebration Effects** — Confetti animations for correct answers
@@ -72,7 +75,25 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🌐 Deployment
 
-Deploy on [Vercel](https://vercel.com) with zero configuration:
+This project is configured for automatic deployment on [Vercel](https://vercel.com).
+
+### Automatic Deployment
+- Push to `main` branch triggers automatic deployment
+- Vercel will build and deploy within 2-3 minutes
+- Check deployment status at [Vercel Dashboard](https://vercel.com/dashboard)
+
+### Manual Deployment
+If changes don't reflect:
+1. Go to your Vercel project dashboard
+2. Click "Deployments" tab
+3. Click "Redeploy" on the latest deployment
+4. Clear browser cache (Ctrl+Shift+R or Cmd+Shift+R)
+
+### Local Testing
+```bash
+npm run build
+npm start
+```
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
 
