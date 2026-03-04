@@ -18,7 +18,7 @@ const SCHOOL_SLIDES = [
   <SlideLemonadeStory key="lemonade" />,
   <SlideFromWordsToEquation key="modeling" />,
   <SlidePolynomialRecipe key="polynomial" />,
-  <QuizSlide key="quiz" />,
+  <QuizSlide key="quiz" category="school" />,
   <SlideConclusion key="conclusion" />,
 ];
 
@@ -31,7 +31,7 @@ const UG_SLIDES = [
   <SlidePowerOfX key="powers" />,
   <SlideDifferentiation key="diff" />,
   <SlideSolvingStepByStep key="solve" />,
-  <QuizSlide key="quiz" />,
+  <QuizSlide key="quiz" category="ug" />,
   <SlideConclusion key="conclusion" />,
 ];
 
@@ -47,7 +47,7 @@ const PG_SLIDES = [
   <SlideErrorAnalysis key="error" />,
   <SlideComparison key="compare" />,
   <SlideStability key="stability" />,
-  <QuizSlide key="quiz" />,
+  <QuizSlide key="quiz" category="pg" />,
   <SlideConclusion key="conclusion" />,
 ];
 
@@ -63,7 +63,7 @@ const RESEARCH_SLIDES = [
   <SlideErrorAnalysis key="error" />,
   <SlideComparison key="compare" />,
   <SlideStability key="stability" />,
-  <QuizSlide key="quiz" />,
+  <QuizSlide key="quiz" category="research" />,
   <SlideConclusion key="conclusion" />,
 ];
 
