@@ -17,7 +17,7 @@ interface Question {
 }
 
 // School Students - Basic concepts
-const SCHOOL_QUESTIONS: Question[] = [
+export const SCHOOL_QUESTIONS: Question[] = [
     {
         id: 1,
         question: "If x increases, what happens to 5x?",
@@ -341,7 +341,7 @@ const SCHOOL_QUESTIONS: Question[] = [
 ];
 
 // UG Students - Intermediate concepts
-const UG_QUESTIONS: Question[] = [
+export const UG_QUESTIONS: Question[] = [
     {
         id: 1,
         question: "What does the derivative of a function represent?",
@@ -665,7 +665,7 @@ const UG_QUESTIONS: Question[] = [
 ];
 
 // PG Students - Advanced concepts
-const PG_QUESTIONS: Question[] = [
+export const PG_QUESTIONS: Question[] = [
     {
         id: 1,
         question: "What condition ensures a local minimum at a critical point?",
@@ -989,7 +989,7 @@ const PG_QUESTIONS: Question[] = [
 ];
 
 // Research Scholars - Expert level
-const RESEARCH_QUESTIONS: Question[] = [
+export const RESEARCH_QUESTIONS: Question[] = [
     {
         id: 1,
         question: "What is the KKT condition in constrained optimization?",
@@ -1352,12 +1352,89 @@ const RESEARCH_QUESTIONS: Question[] = [
     }
 ];
 
-const QUESTIONS_BY_CATEGORY: Record<StudentCategory, Question[]> = {
+export const QUESTIONS_BY_CATEGORY: Record<StudentCategory, Question[]> = {
     school: SCHOOL_QUESTIONS,
     ug: UG_QUESTIONS,
     pg: PG_QUESTIONS,
     research: RESEARCH_QUESTIONS,
 };
+
+interface SingleQuestionProps {
+    question: Question;
+}
+
+export function SingleQuestion({ question }: SingleQuestionProps) {
+    const [selected, setSelected] = useState<number | null>(null);
+    const [showResult, setShowResult] = useState(false);
+
+    const handleSelect = (idx: number) => {
+        if (showResult) return;
+        setSelected(idx);
+        setShowResult(true);
+        if (idx === question.correct) {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#10b981', '#3b82f6', '#f59e0b']
+            });
+        }
+    };
+
+    return (
+        <div className="max-w-4xl mx-auto space-y-12">
+            <div className="space-y-4">
+                <h3 className="text-4xl font-black leading-tight">{question.question}</h3>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4">
+                {question.options.map((opt, i) => {
+                    const isCorrect = i === question.correct;
+                    const isSelected = selected === i;
+
+                    return (
+                        <motion.button
+                            key={i}
+                            whileHover={!showResult ? { scale: 1.02, x: 10 } : {}}
+                            onClick={() => handleSelect(i)}
+                            className={cn(
+                                "p-6 text-left text-2xl font-bold rounded-2xl border transition-all duration-300 flex items-center justify-between",
+                                !showResult && "bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50",
+                                showResult && isCorrect && "bg-primary/20 border-primary text-primary",
+                                showResult && isSelected && !isCorrect && "bg-red-500/20 border-red-500 text-red-500",
+                                showResult && !isSelected && !isCorrect && "opacity-30 border-white/5"
+                            )}
+                        >
+                            <span>{opt}</span>
+                            {showResult && isCorrect && <CheckCircle2 className="text-primary" />}
+                            {showResult && isSelected && !isCorrect && <XCircle className="text-red-500" />}
+                        </motion.button>
+                    );
+                })}
+            </div>
+
+            <AnimatePresence>
+                {showResult && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="space-y-6"
+                    >
+                        <div className="glass p-8 rounded-3xl border border-white/10 space-y-4">
+                            <div className="flex items-center gap-2 text-xl font-bold">
+                                <span className="text-primary tracking-widest uppercase text-sm">Explanation</span>
+                            </div>
+                            <p className="text-2xl leading-relaxed">{question.explanation}</p>
+                            {question.analogy && (
+                                <p className="text-xl text-slate-400 italic">💡 Analogy: {question.analogy}</p>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+}
 
 interface QuizComponentProps {
     category: StudentCategory;

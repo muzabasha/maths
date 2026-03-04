@@ -5,14 +5,7 @@ import { usePresentation, StudentCategory } from './PresentationContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Maximize, Minimize, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SlideIntro, SlideLemonadeStory } from './slides/SlideFoundations';
-import { SlideFromWordsToEquation } from './slides/SlideModeling';
-import { SlidePolynomialRecipe } from './slides/SlidePolynomialIntuition';
-import { SlidePowerOfX } from './slides/SlidePowers';
-import { SlideDifferentiation, SlideStability } from './slides/SlideCalculus';
-import { SlideSolvingStepByStep, SlideComparison } from './slides/SlideAnalysis';
-import { SlideErrorAnalysis, SlideConclusion } from './slides/SlideOutcome';
-import QuizComponent from './Quiz';
+import { SingleQuestion, QUESTIONS_BY_CATEGORY } from './Quiz';
 import Slide from './Slide';
 
 const categoryLabels: Record<StudentCategory, string> = {
@@ -22,55 +15,29 @@ const categoryLabels: Record<StudentCategory, string> = {
     research: 'Research Scholars',
 };
 
-const quizMeta: Record<StudentCategory, { title: string; subtitle: string }> = {
-    school: { title: 'The Knowledge Challenge 🎮', subtitle: 'Test your skills before the final reward!' },
-    ug: { title: 'Test Your Understanding 🎯', subtitle: "Apply what you've learned!" },
-    pg: { title: 'Advanced Concepts Quiz 🧠', subtitle: 'Challenge your advanced knowledge!' },
-    research: { title: 'Expert Level Challenge 🔬', subtitle: 'Demonstrate your expertise!' },
-};
-
 /*
  * Slide factory — returns a plain array of { id, render } objects.
  * The `render` function is called at render time so React always
  * creates fresh component instances for the active category.
  */
 function getSlideDefinitions(category: StudentCategory) {
-    const defs: { id: string; render: () => React.ReactNode }[] = [
-        { id: 'intro', render: () => <SlideIntro /> },
-        { id: 'lemonade', render: () => <SlideLemonadeStory /> },
-        { id: 'modeling', render: () => <SlideFromWordsToEquation /> },
-        { id: 'polynomial', render: () => <SlidePolynomialRecipe /> },
-    ];
+    const questions = QUESTIONS_BY_CATEGORY[category];
 
-    if (category !== 'school') {
-        defs.push(
-            { id: 'powers', render: () => <SlidePowerOfX /> },
-            { id: 'diff', render: () => <SlideDifferentiation /> },
-            { id: 'solve', render: () => <SlideSolvingStepByStep /> },
-        );
-    }
-
-    if (category === 'pg' || category === 'research') {
-        defs.push(
-            { id: 'error', render: () => <SlideErrorAnalysis /> },
-            { id: 'compare', render: () => <SlideComparison /> },
-            { id: 'stability', render: () => <SlideStability /> },
-        );
-    }
-
-    const meta = quizMeta[category];
-    defs.push({
-        id: 'quiz',
+    // Map each question to its own slide
+    const defs = questions.map((q, index) => ({
+        id: `activity-${q.id}-${index}`,
         render: () => (
-            <Slide title={meta.title} subtitle={meta.subtitle}>
+            <Slide
+                title={`Activity ${index + 1}`}
+                subtitle={categoryLabels[category]}
+            >
                 <div className="py-8">
-                    <QuizComponent category={category} />
+                    <SingleQuestion question={q} />
                 </div>
             </Slide>
-        ),
-    });
+        )
+    }));
 
-    defs.push({ id: 'conclusion', render: () => <SlideConclusion /> });
     return defs;
 }
 
