@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, XCircle, ChevronRight, RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import confetti from 'canvas-confetti';
-import { StudentCategory, usePresentation } from './PresentationContext';
+import type { StudentCategory } from './PresentationContext';
 
 interface Question {
     id: number;
@@ -720,12 +720,10 @@ const QUESTIONS_BY_CATEGORY: Record<StudentCategory, Question[]> = {
 };
 
 interface QuizComponentProps {
-    category?: StudentCategory;
+    category: StudentCategory;
 }
 
-export default function QuizComponent({ category: propCategory }: QuizComponentProps) {
-    const { activeCategory } = usePresentation();
-    const category = propCategory ?? activeCategory;
+export default function QuizComponent({ category }: QuizComponentProps) {
     const QUESTIONS = QUESTIONS_BY_CATEGORY[category];
 
     const [currentIdx, setCurrentIdx] = useState(0);
@@ -734,7 +732,7 @@ export default function QuizComponent({ category: propCategory }: QuizComponentP
     const [score, setScore] = useState(0);
     const [isFinished, setIsFinished] = useState(false);
 
-    // Reset quiz state whenever category changes
+    // Reset all state when category changes
     useEffect(() => {
         setCurrentIdx(0);
         setSelected(null);
