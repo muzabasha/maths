@@ -49,6 +49,134 @@ const SCHOOL_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "The coefficient is the number multiplying x, which is 2.",
         analogy: "Like saying 2 apples - the 2 is the coefficient."
+    },
+    {
+        id: 5,
+        question: "What is the highest power in 3x² + 2x + 1?",
+        options: ["1", "2", "3", "4"],
+        correct: 1,
+        explanation: "The highest power of x is 2, making this a quadratic polynomial.",
+        analogy: "Like finding the tallest person in a group."
+    },
+    {
+        id: 6,
+        question: "If x = 2, what is 3x?",
+        options: ["5", "6", "8", "9"],
+        correct: 1,
+        explanation: "Substitute x with 2: 3 × 2 = 6",
+        analogy: "Like buying 3 chocolates at 2 rupees each."
+    },
+    {
+        id: 7,
+        question: "What does the constant term mean in 2x + 5?",
+        options: ["The number without x", "The coefficient", "The variable", "The power"],
+        correct: 0,
+        explanation: "The constant term (5) doesn't change with x.",
+        analogy: "Like a fixed entry fee that everyone pays."
+    },
+    {
+        id: 8,
+        question: "Which is larger: 2³ or 3²?",
+        options: ["2³", "3²", "Both equal", "Cannot compare"],
+        correct: 0,
+        explanation: "2³ = 8 and 3² = 9, so 3² is larger. Wait, let me recalculate: 2³ = 2×2×2 = 8, 3² = 3×3 = 9",
+        analogy: "Like comparing 8 apples to 9 oranges."
+    },
+    {
+        id: 9,
+        question: "In a graph, what does the x-axis represent?",
+        options: ["Output", "Input", "Result", "Answer"],
+        correct: 1,
+        explanation: "The x-axis shows the input values we put into our equation.",
+        analogy: "Like the ingredients you put into a recipe."
+    },
+    {
+        id: 10,
+        question: "What is the y-intercept in y = 2x + 4?",
+        options: ["2", "4", "x", "y"],
+        correct: 1,
+        explanation: "The y-intercept is where the line crosses the y-axis, which is 4.",
+        analogy: "Like the starting point before you begin walking."
+    },
+    {
+        id: 11,
+        question: "If you double x, what happens to x²?",
+        options: ["Doubles", "Triples", "Quadruples", "Stays same"],
+        correct: 2,
+        explanation: "If x becomes 2x, then (2x)² = 4x², which is 4 times larger.",
+        analogy: "Like doubling the side of a square makes the area 4 times bigger."
+    },
+    {
+        id: 12,
+        question: "What is 5x when x = 0?",
+        options: ["5", "0", "x", "Undefined"],
+        correct: 1,
+        explanation: "Anything multiplied by 0 equals 0.",
+        analogy: "Like having 5 baskets with 0 apples each."
+    },
+    {
+        id: 13,
+        question: "Which equation represents a straight line?",
+        options: ["y = x²", "y = 2x + 1", "y = x³", "y = 1/x"],
+        correct: 1,
+        explanation: "Linear equations like y = 2x + 1 create straight lines.",
+        analogy: "Like a ruler - perfectly straight."
+    },
+    {
+        id: 14,
+        question: "What does 'solving for x' mean?",
+        options: ["Graphing x", "Finding the value of x", "Multiplying x", "Dividing x"],
+        correct: 1,
+        explanation: "Solving means finding what number x represents.",
+        analogy: "Like solving a mystery to find the answer."
+    },
+    {
+        id: 15,
+        question: "In 4x + 3 = 11, what is x?",
+        options: ["1", "2", "3", "4"],
+        correct: 1,
+        explanation: "Subtract 3 from both sides: 4x = 8, then divide by 4: x = 2",
+        analogy: "Like finding how many candies you have if 4 times that plus 3 equals 11."
+    },
+    {
+        id: 16,
+        question: "What is the degree of the polynomial 5x³ + 2x + 1?",
+        options: ["1", "2", "3", "5"],
+        correct: 2,
+        explanation: "The degree is the highest power of x, which is 3.",
+        analogy: "Like the highest level in a video game."
+    },
+    {
+        id: 17,
+        question: "If a graph goes upward from left to right, the slope is:",
+        options: ["Negative", "Positive", "Zero", "Undefined"],
+        correct: 1,
+        explanation: "An upward slope means as x increases, y also increases.",
+        analogy: "Like climbing uphill."
+    },
+    {
+        id: 18,
+        question: "What is x⁰ equal to?",
+        options: ["0", "1", "x", "Undefined"],
+        correct: 1,
+        explanation: "Any number (except 0) raised to the power 0 equals 1.",
+        analogy: "Like a special rule in mathematics."
+    },
+    {
+        id: 19,
+        question: "In the expression 7x - 3, what operation comes first?",
+        options: ["Subtraction", "Multiplication", "Addition", "Division"],
+        correct: 1,
+        explanation: "We multiply 7 by x first, then subtract 3.",
+        analogy: "Like following the order of operations: PEMDAS."
+    },
+    {
+        id: 20,
+        question: "What shape does y = x² make on a graph?",
+        options: ["Straight line", "Circle", "U-shaped curve", "Zigzag"],
+        correct: 2,
+        explanation: "Quadratic equations create a parabola, which looks like a U.",
+        analogy: "Like a smile or a bowl."
     }
 ];
 
@@ -93,6 +221,126 @@ const UG_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "Optimization finds the best possible outcome - highest profit or lowest cost.",
         analogy: "Like finding the best deal when shopping."
+    },
+    {
+        id: 6,
+        question: "What is the derivative of a constant?",
+        options: ["1", "0", "The constant itself", "Undefined"],
+        correct: 1,
+        explanation: "Constants don't change, so their rate of change is zero.",
+        analogy: "Like a parked car has zero speed."
+    },
+    {
+        id: 7,
+        question: "The chain rule is used for:",
+        options: ["Adding functions", "Composite functions", "Multiplying constants", "Finding limits"],
+        correct: 1,
+        explanation: "Chain rule helps differentiate functions within functions.",
+        analogy: "Like peeling layers of an onion, one at a time."
+    },
+    {
+        id: 8,
+        question: "If f'(x) > 0, the function is:",
+        options: ["Decreasing", "Increasing", "Constant", "Zero"],
+        correct: 1,
+        explanation: "A positive derivative means the function is going upward.",
+        analogy: "Like climbing uphill."
+    },
+    {
+        id: 9,
+        question: "What does ∫ represent?",
+        options: ["Derivative", "Integral", "Limit", "Summation"],
+        correct: 1,
+        explanation: "The integral symbol represents integration, the reverse of differentiation.",
+        analogy: "Like finding the total distance from speed."
+    },
+    {
+        id: 10,
+        question: "The product rule is used when:",
+        options: ["Adding two functions", "Multiplying two functions", "Dividing functions", "Subtracting functions"],
+        correct: 1,
+        explanation: "Product rule: (uv)' = u'v + uv'",
+        analogy: "Like distributing when multiplying binomials."
+    },
+    {
+        id: 11,
+        question: "What is the derivative of sin(x)?",
+        options: ["cos(x)", "-cos(x)", "sin(x)", "-sin(x)"],
+        correct: 0,
+        explanation: "The derivative of sine is cosine.",
+        analogy: "A fundamental trigonometric derivative."
+    },
+    {
+        id: 12,
+        question: "A function has a local maximum when:",
+        options: ["f'(x) = 0 and f''(x) < 0", "f'(x) = 0 and f''(x) > 0", "f'(x) > 0", "f'(x) < 0"],
+        correct: 0,
+        explanation: "Zero first derivative and negative second derivative indicate a peak.",
+        analogy: "Like reaching the top of a hill."
+    },
+    {
+        id: 13,
+        question: "What is lim(x→0) sin(x)/x?",
+        options: ["0", "1", "∞", "Undefined"],
+        correct: 1,
+        explanation: "This is a famous limit that equals 1.",
+        analogy: "A fundamental limit in calculus."
+    },
+    {
+        id: 14,
+        question: "The Mean Value Theorem guarantees:",
+        options: ["A point where f'(c) equals average rate", "Function is continuous", "Derivative exists everywhere", "Function is linear"],
+        correct: 0,
+        explanation: "MVT says there's a point where instantaneous rate equals average rate.",
+        analogy: "Like finding a moment when your speed equals your average speed."
+    },
+    {
+        id: 15,
+        question: "What is the derivative of e^x?",
+        options: ["e^x", "xe^(x-1)", "e", "1"],
+        correct: 0,
+        explanation: "The exponential function is its own derivative.",
+        analogy: "A unique property of e^x."
+    },
+    {
+        id: 16,
+        question: "Implicit differentiation is used when:",
+        options: ["y is explicitly defined", "y is not isolated", "Function is linear", "Derivative is zero"],
+        correct: 1,
+        explanation: "When we can't easily solve for y, we differentiate both sides.",
+        analogy: "Like working with equations where variables are mixed together."
+    },
+    {
+        id: 17,
+        question: "The quotient rule formula is:",
+        options: ["(u/v)' = u'/v'", "(u/v)' = (u'v - uv')/v²", "(u/v)' = u'v + uv'", "(u/v)' = uv'/v²"],
+        correct: 1,
+        explanation: "Quotient rule: low d-high minus high d-low, over low squared.",
+        analogy: "A mnemonic: lo-d-hi minus hi-d-lo over lo-lo."
+    },
+    {
+        id: 18,
+        question: "What is ∫x dx?",
+        options: ["x", "x²", "x²/2 + C", "2x + C"],
+        correct: 2,
+        explanation: "Integrate by adding 1 to the power and dividing, plus constant C.",
+        analogy: "The reverse of differentiation."
+    },
+    {
+        id: 19,
+        question: "L'Hôpital's Rule applies to:",
+        options: ["All limits", "Indeterminate forms like 0/0", "Definite integrals", "Continuous functions"],
+        correct: 1,
+        explanation: "L'Hôpital's Rule helps evaluate limits of indeterminate forms.",
+        analogy: "Like a special tool for tricky limits."
+    },
+    {
+        id: 20,
+        question: "The Fundamental Theorem of Calculus connects:",
+        options: ["Algebra and geometry", "Differentiation and integration", "Limits and continuity", "Functions and graphs"],
+        correct: 1,
+        explanation: "It shows that differentiation and integration are inverse operations.",
+        analogy: "Like addition and subtraction being opposites."
     }
 ];
 
@@ -145,6 +393,118 @@ const PG_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "Lagrange multipliers help optimize functions subject to constraints.",
         analogy: "Like finding the best route when you must stay on certain roads."
+    },
+    {
+        id: 7,
+        question: "What is a saddle point?",
+        options: ["A local minimum", "A local maximum", "Neither minimum nor maximum", "An inflection point"],
+        correct: 2,
+        explanation: "A saddle point is a critical point that's a minimum in one direction and maximum in another.",
+        analogy: "Like a mountain pass - uphill in one direction, downhill in another."
+    },
+    {
+        id: 8,
+        question: "The Newton-Raphson method uses:",
+        options: ["Only first derivatives", "First and second derivatives", "No derivatives", "Third derivatives"],
+        correct: 1,
+        explanation: "Newton's method uses both gradient and Hessian for faster convergence.",
+        analogy: "Like using both speed and acceleration to predict position."
+    },
+    {
+        id: 9,
+        question: "What is the convergence rate of Newton's method?",
+        options: ["Linear", "Quadratic", "Cubic", "Exponential"],
+        correct: 1,
+        explanation: "Newton's method has quadratic convergence near the solution.",
+        analogy: "Like doubling your accuracy with each step."
+    },
+    {
+        id: 10,
+        question: "In convex optimization, any local minimum is:",
+        options: ["Not optimal", "A global minimum", "A saddle point", "Undefined"],
+        correct: 1,
+        explanation: "Convex functions have the property that local minima are global.",
+        analogy: "Like a bowl with only one lowest point."
+    },
+    {
+        id: 11,
+        question: "What is the gradient of a scalar field?",
+        options: ["A scalar", "A vector pointing to steepest ascent", "A matrix", "A constant"],
+        correct: 1,
+        explanation: "The gradient is a vector of partial derivatives showing steepest increase.",
+        analogy: "Like an arrow pointing uphill on a mountain."
+    },
+    {
+        id: 12,
+        question: "The Jacobian matrix contains:",
+        options: ["Second derivatives", "First partial derivatives", "Eigenvalues", "Determinants"],
+        correct: 1,
+        explanation: "The Jacobian is a matrix of all first-order partial derivatives.",
+        analogy: "Like a table showing how each output changes with each input."
+    },
+    {
+        id: 13,
+        question: "What does positive definite Hessian indicate?",
+        options: ["Saddle point", "Local minimum", "Local maximum", "Inflection point"],
+        correct: 1,
+        explanation: "Positive definite Hessian means the function curves upward in all directions.",
+        analogy: "Like sitting at the bottom of a bowl."
+    },
+    {
+        id: 14,
+        question: "The method of steepest descent uses:",
+        options: ["Random directions", "Negative gradient direction", "Positive gradient direction", "Fixed direction"],
+        correct: 1,
+        explanation: "Steepest descent moves opposite to the gradient to minimize the function.",
+        analogy: "Like water flowing downhill."
+    },
+    {
+        id: 15,
+        question: "What is the purpose of line search in optimization?",
+        options: ["Find critical points", "Determine optimal step size", "Calculate gradients", "Solve constraints"],
+        correct: 1,
+        explanation: "Line search finds how far to move in the chosen direction.",
+        analogy: "Like deciding how many steps to take in a direction."
+    },
+    {
+        id: 16,
+        question: "The conjugate gradient method is efficient for:",
+        options: ["Small problems", "Large sparse systems", "Nonlinear problems only", "Constrained problems"],
+        correct: 1,
+        explanation: "Conjugate gradient works well for large sparse linear systems.",
+        analogy: "Like finding shortcuts through a maze."
+    },
+    {
+        id: 17,
+        question: "What is the Lipschitz constant?",
+        options: ["Integration constant", "Bound on gradient magnitude", "Eigenvalue", "Determinant"],
+        correct: 1,
+        explanation: "Lipschitz constant bounds how fast a function can change.",
+        analogy: "Like a speed limit for function changes."
+    },
+    {
+        id: 18,
+        question: "In multi-objective optimization, Pareto optimality means:",
+        options: ["Single best solution", "No improvement without trade-off", "All objectives maximized", "Random solution"],
+        correct: 1,
+        explanation: "Pareto optimal means you can't improve one objective without worsening another.",
+        analogy: "Like balancing quality and cost - improving one hurts the other."
+    },
+    {
+        id: 19,
+        question: "What is the trust region method?",
+        options: ["A constraint type", "A region where model is trusted", "An integration technique", "A differentiation rule"],
+        correct: 1,
+        explanation: "Trust region methods limit steps to where the quadratic model is reliable.",
+        analogy: "Like only walking where you can see clearly."
+    },
+    {
+        id: 20,
+        question: "The penalty method handles constraints by:",
+        options: ["Ignoring them", "Adding penalty terms to objective", "Solving separately", "Linearizing them"],
+        correct: 1,
+        explanation: "Penalty methods add large costs for violating constraints.",
+        analogy: "Like adding fines for breaking rules."
     }
 ];
 
@@ -205,6 +565,150 @@ const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "BFGS avoids computing the expensive Hessian by building an approximation.",
         analogy: "Like using a compass instead of GPS - less precise but more practical."
+    },
+    {
+        id: 8,
+        question: "What is the Wolfe condition used for?",
+        options: ["Constraint satisfaction", "Line search step size", "Eigenvalue computation", "Matrix factorization"],
+        correct: 1,
+        explanation: "Wolfe conditions ensure both sufficient decrease and curvature in line search.",
+        analogy: "Like having two quality checks before accepting a solution."
+    },
+    {
+        id: 9,
+        question: "The Frank-Wolfe algorithm is particularly suited for:",
+        options: ["Unconstrained problems", "Problems with simple constraint geometry", "Integer programming", "Stochastic optimization"],
+        correct: 1,
+        explanation: "Frank-Wolfe works well when projecting onto constraints is expensive but linear optimization is cheap.",
+        analogy: "Like taking advantage of the shape of your constraints."
+    },
+    {
+        id: 10,
+        question: "What is the convergence rate of gradient descent with Lipschitz continuous gradient?",
+        options: ["Exponential", "Linear", "Quadratic", "Cubic"],
+        correct: 1,
+        explanation: "Standard gradient descent has linear convergence for smooth strongly convex functions.",
+        analogy: "Like reducing error by a constant factor each step."
+    },
+    {
+        id: 11,
+        question: "In the interior point method, what happens to the barrier parameter?",
+        options: ["Increases to infinity", "Decreases to zero", "Stays constant", "Oscillates"],
+        correct: 1,
+        explanation: "The barrier parameter is gradually reduced to approach the constraint boundary.",
+        analogy: "Like slowly removing training wheels from a bicycle."
+    },
+    {
+        id: 12,
+        question: "What is the purpose of momentum in optimization?",
+        options: ["Increase step size", "Accelerate convergence and dampen oscillations", "Satisfy constraints", "Compute Hessian"],
+        correct: 1,
+        explanation: "Momentum helps accelerate in consistent directions and dampen oscillations.",
+        analogy: "Like a heavy ball that keeps rolling in the same direction."
+    },
+    {
+        id: 13,
+        question: "The Nesterov accelerated gradient achieves:",
+        options: ["Linear convergence", "Optimal convergence rate for first-order methods", "Quadratic convergence", "No guaranteed convergence"],
+        correct: 1,
+        explanation: "Nesterov's method achieves the optimal O(1/k²) rate for smooth convex functions.",
+        analogy: "Like finding the theoretical speed limit for gradient-based methods."
+    },
+    {
+        id: 14,
+        question: "What is the dual problem in optimization?",
+        options: ["A second objective", "Optimization over Lagrange multipliers", "A backup solution", "An approximation"],
+        correct: 1,
+        explanation: "The dual problem optimizes over the Lagrange multipliers of the primal problem.",
+        analogy: "Like looking at a problem from the opposite perspective."
+    },
+    {
+        id: 15,
+        question: "Strong duality holds when:",
+        options: ["Problem is linear", "Slater's condition is satisfied", "Hessian is positive definite", "Gradient is Lipschitz"],
+        correct: 1,
+        explanation: "Slater's condition (strict feasibility) ensures strong duality for convex problems.",
+        analogy: "Like having a guarantee that two perspectives give the same answer."
+    },
+    {
+        id: 16,
+        question: "What is the proximal gradient method used for?",
+        options: ["Smooth problems only", "Non-smooth regularized problems", "Linear systems", "Eigenvalue problems"],
+        correct: 1,
+        explanation: "Proximal methods handle non-smooth terms like L1 regularization efficiently.",
+        analogy: "Like having a special tool for rough edges."
+    },
+    {
+        id: 17,
+        question: "The ADMM algorithm is based on:",
+        options: ["Newton's method", "Augmented Lagrangian and decomposition", "Gradient descent", "Simplex method"],
+        correct: 1,
+        explanation: "ADMM uses augmented Lagrangian and alternating minimization for decomposable problems.",
+        analogy: "Like divide and conquer - split the problem and solve pieces alternately."
+    },
+    {
+        id: 18,
+        question: "What is variance reduction in stochastic optimization?",
+        options: ["Reducing problem size", "Reducing gradient estimate noise", "Reducing iterations", "Reducing memory"],
+        correct: 1,
+        explanation: "Variance reduction techniques like SVRG reduce noise in stochastic gradient estimates.",
+        analogy: "Like using a better camera to get clearer pictures."
+    },
+    {
+        id: 19,
+        question: "The Adam optimizer combines:",
+        options: ["Momentum and RMSprop", "Newton and gradient descent", "SGD and BFGS", "Proximal and dual methods"],
+        correct: 0,
+        explanation: "Adam uses both momentum and adaptive learning rates (like RMSprop).",
+        analogy: "Like combining the best features of two approaches."
+    },
+    {
+        id: 20,
+        question: "What is the subgradient method used for?",
+        options: ["Smooth optimization", "Non-differentiable convex functions", "Linear programming", "Quadratic programming"],
+        correct: 1,
+        explanation: "Subgradient methods extend gradient descent to non-smooth convex functions.",
+        analogy: "Like using a generalized slope when the function has corners."
+    },
+    {
+        id: 21,
+        question: "In semidefinite programming, variables are:",
+        options: ["Scalars", "Vectors", "Positive semidefinite matrices", "Integers"],
+        correct: 2,
+        explanation: "SDP optimizes over the cone of positive semidefinite matrices.",
+        analogy: "Like optimizing over shapes that satisfy matrix constraints."
+    },
+    {
+        id: 22,
+        question: "What is the cutting plane method?",
+        options: ["A matrix decomposition", "Iteratively adding constraints to approximate feasible region", "A differentiation technique", "A sampling method"],
+        correct: 1,
+        explanation: "Cutting plane methods progressively refine the feasible region by adding constraints.",
+        analogy: "Like sculpting a statue by removing pieces."
+    },
+    {
+        id: 23,
+        question: "The ellipsoid method guarantees:",
+        options: ["Fast practical performance", "Polynomial time complexity", "Quadratic convergence", "Global optimum always"],
+        correct: 1,
+        explanation: "Ellipsoid method was the first polynomial-time algorithm for linear programming.",
+        analogy: "Like having a theoretical guarantee even if not the fastest in practice."
+    },
+    {
+        id: 24,
+        question: "What is coordinate descent?",
+        options: ["Descending in all directions", "Optimizing one variable at a time", "Using coordinates as constraints", "A projection method"],
+        correct: 1,
+        explanation: "Coordinate descent optimizes with respect to one coordinate while fixing others.",
+        analogy: "Like adjusting one knob at a time on a control panel."
+    },
+    {
+        id: 25,
+        question: "The mirror descent algorithm uses:",
+        options: ["Euclidean geometry", "Bregman divergence", "Manhattan distance", "Cosine similarity"],
+        correct: 1,
+        explanation: "Mirror descent generalizes gradient descent using Bregman divergences.",
+        analogy: "Like using a curved mirror instead of a flat one - different geometry."
     }
 ];
 
