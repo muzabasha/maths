@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, XCircle, ChevronRight, RefreshCcw } from 'lucide-react';
+import { CheckCircle2, XCircle, ChevronRight, RefreshCcw, Calculator, Play, Settings2, Sparkles, SlidersHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import confetti from 'canvas-confetti';
 import type { StudentCategory } from './PresentationContext';
@@ -14,6 +14,14 @@ interface Question {
     correct: number;
     explanation: string;
     analogy?: string;
+    interactive?: {
+        type: 'slider' | 'formula' | 'plot';
+        label?: string;
+        min?: number;
+        max?: number;
+        step?: number;
+        unit?: string;
+    };
 }
 
 // School Students - Basic concepts
@@ -24,7 +32,14 @@ export const SCHOOL_QUESTIONS: Question[] = [
         options: ["Decreases", "Increases", "Stays same", "Becomes zero"],
         correct: 1,
         explanation: "As you sell more glasses (x), your profit (5x) goes up!",
-        analogy: "Like walking more steps means more distance."
+        analogy: "Like walking more steps means more distance.",
+        interactive: {
+            type: 'slider',
+            label: 'Number of Glasses (x)',
+            min: 0,
+            max: 50,
+            unit: ' pcs'
+        }
     },
     {
         id: 2,
@@ -32,7 +47,14 @@ export const SCHOOL_QUESTIONS: Question[] = [
         options: ["Double x", "x × x", "Half x", "x − 2"],
         correct: 1,
         explanation: "x² means x multiplied by itself, forming a square area.",
-        analogy: "If side is 3, area is 3×3=9."
+        analogy: "If side is 3, area is 3×3=9.",
+        interactive: {
+            type: 'slider',
+            label: 'Side Length (x)',
+            min: 0,
+            max: 20,
+            unit: ' m'
+        }
     },
     {
         id: 3,
@@ -96,7 +118,14 @@ export const SCHOOL_QUESTIONS: Question[] = [
         options: ["2", "4", "x", "y"],
         correct: 1,
         explanation: "The y-intercept is where the line crosses the y-axis, which is 4.",
-        analogy: "Like the starting point before you begin walking."
+        analogy: "Like the starting point before you begin walking.",
+        interactive: {
+            type: 'slider',
+            label: 'Input X',
+            min: -10,
+            max: 10,
+            step: 0.5
+        }
     },
     {
         id: 11,
@@ -356,7 +385,14 @@ export const UG_QUESTIONS: Question[] = [
         options: ["x²", "3x²", "3x", "x³/3"],
         correct: 1,
         explanation: "Using the power rule: bring down the exponent and reduce it by 1.",
-        analogy: "3 comes down, and x³ becomes x²."
+        analogy: "3 comes down, and x³ becomes x².",
+        interactive: {
+            type: 'plot',
+            label: 'Input X',
+            min: -5,
+            max: 5,
+            step: 0.1
+        }
     },
     {
         id: 3,
@@ -672,7 +708,14 @@ export const PG_QUESTIONS: Question[] = [
         options: ["f'(x) > 0", "f''(x) > 0", "f'(x) < 0", "f''(x) < 0"],
         correct: 1,
         explanation: "A positive second derivative indicates the function is concave up, forming a minimum.",
-        analogy: "Like a bowl that holds water - it curves upward."
+        analogy: "Like a bowl that holds water - it curves upward.",
+        interactive: {
+            type: 'slider',
+            label: 'Curvature (f\'\')',
+            min: -10,
+            max: 10,
+            step: 0.5
+        }
     },
     {
         id: 2,
@@ -1004,7 +1047,14 @@ export const RESEARCH_QUESTIONS: Question[] = [
         options: ["Not guaranteed to exist", "Always a global minimum", "Only valid locally", "Dependent on initial conditions"],
         correct: 1,
         explanation: "Convex functions have the special property that any local minimum is also global.",
-        analogy: "Like a bowl - there's only one lowest point."
+        analogy: "Like a bowl - there's only one lowest point.",
+        interactive: {
+            type: 'slider',
+            label: 'Convexity Multiplier',
+            min: 1,
+            max: 5,
+            step: 0.2
+        }
     },
     {
         id: 3,
@@ -1359,6 +1409,121 @@ export const QUESTIONS_BY_CATEGORY: Record<StudentCategory, Question[]> = {
     research: RESEARCH_QUESTIONS,
 };
 
+interface InteractivePlaygroundProps {
+    type: 'slider' | 'formula' | 'plot';
+    label?: string;
+    min?: number;
+    max?: number;
+    step?: number;
+    unit?: string;
+    question: string;
+}
+
+function InteractivePlayground({ type, label = 'Variable X', min = 0, max = 100, step = 1, unit = '', question }: InteractivePlaygroundProps) {
+    const [value, setValue] = useState(min);
+
+    // Logic for dynamic display based on value and question context
+    const getResult = () => {
+        const q = question.toLowerCase();
+        if (q.includes('5x')) return (value * 5).toFixed(1);
+        if (q.includes('x²')) return (value * value).toFixed(1);
+        if (q.includes('x³')) return (value * value * value).toFixed(1);
+        if (q.includes('2x + 3')) return (2 * value + 3).toFixed(1);
+        if (q.includes('2x + 5')) return (2 * value + 5).toFixed(1);
+        if (q.includes('2x + 4')) return (2 * value + 4).toFixed(1);
+        if (q.includes('derivative') && q.includes('x³')) return (3 * value * value).toFixed(1);
+        if (q.includes('sin(x)')) return Math.sin(value).toFixed(2);
+        if (q.includes('cos(x)')) return Math.cos(value).toFixed(2);
+        if (q.includes('square root')) return Math.sqrt(value).toFixed(2);
+        return value;
+    };
+
+    return (
+        <div className="glass-morphism p-8 rounded-3xl border border-white/5 space-y-8 bg-white/5 backdrop-blur-xl">
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-primary/20 rounded-lg">
+                        <SlidersHorizontal className="text-primary" size={20} />
+                    </div>
+                    <div>
+                        <h4 className="font-bold text-lg">Interactive Lab</h4>
+                        <p className="text-sm text-slate-400">Learn by doing • Real-time simulation</p>
+                    </div>
+                </div>
+                <div className="px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                    <Sparkles size={12} />
+                    Live Preview
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div className="space-y-6">
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <label className="text-sm font-medium text-slate-300 uppercase tracking-widest">{label}</label>
+                            <span className="text-2xl font-black text-primary">{value}{unit}</span>
+                        </div>
+                        <input
+                            type="range"
+                            min={min}
+                            max={max}
+                            step={step}
+                            value={value}
+                            onChange={(e) => setValue(Number(e.target.value))}
+                            className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                        />
+                        <div className="flex justify-between text-[10px] text-slate-500 font-bold uppercase tracking-tighter">
+                            <span>{min}{unit}</span>
+                            <span>{max}{unit}</span>
+                        </div>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-black/20 border border-white/5 space-y-1">
+                        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Active Insight</span>
+                        <p className="text-sm italic text-slate-400">
+                            "Observe how the result shifts as you manipulate the {label.toLowerCase()}. This relationship defines the mathematical structure of the problem."
+                        </p>
+                    </div>
+                </div>
+
+                <div className="relative aspect-square flex items-center justify-center">
+                    <div className="absolute inset-0 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+                    <div className="relative flex flex-col items-center">
+                        <motion.div
+                            key={getResult()}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="text-7xl font-black text-white tracking-tighter"
+                        >
+                            {getResult()}
+                        </motion.div>
+                        <div className="text-primary font-bold uppercase tracking-[0.2em] text-sm mt-2">Current Result</div>
+
+                        {/* Visual representation for geometry questions */}
+                        {question.includes('x²') && (
+                            <motion.div
+                                style={{ width: value * 5, height: value * 5 }}
+                                className="mt-8 border-2 border-primary/50 bg-primary/10 rounded-lg"
+                            />
+                        )}
+                        {question.includes('5x') && (
+                            <div className="mt-8 flex gap-1">
+                                {[...Array(5)].map((_, i) => (
+                                    <motion.div
+                                        key={i}
+                                        style={{ height: value * 2 }}
+                                        className="w-4 bg-primary/20 border border-primary/40 rounded-sm"
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 interface SingleQuestionProps {
     question: Question;
 }
@@ -1382,56 +1547,95 @@ export function SingleQuestion({ question }: SingleQuestionProps) {
     };
 
     return (
-        <div className="max-w-4xl mx-auto space-y-12">
-            <div className="space-y-4">
-                <h3 className="text-4xl font-black leading-tight">{question.question}</h3>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4">
-                {question.options.map((opt, i) => {
-                    const isCorrect = i === question.correct;
-                    const isSelected = selected === i;
-
-                    return (
-                        <motion.button
-                            key={i}
-                            whileHover={!showResult ? { scale: 1.02, x: 10 } : {}}
-                            onClick={() => handleSelect(i)}
-                            className={cn(
-                                "p-6 text-left text-2xl font-bold rounded-2xl border transition-all duration-300 flex items-center justify-between",
-                                !showResult && "bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50",
-                                showResult && isCorrect && "bg-primary/20 border-primary text-primary",
-                                showResult && isSelected && !isCorrect && "bg-red-500/20 border-red-500 text-red-500",
-                                showResult && !isSelected && !isCorrect && "opacity-30 border-white/5"
-                            )}
-                        >
-                            <span>{opt}</span>
-                            {showResult && isCorrect && <CheckCircle2 className="text-primary" />}
-                            {showResult && isSelected && !isCorrect && <XCircle className="text-red-500" />}
-                        </motion.button>
-                    );
-                })}
-            </div>
-
-            <AnimatePresence>
-                {showResult && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="space-y-6"
-                    >
-                        <div className="glass p-8 rounded-3xl border border-white/10 space-y-4">
-                            <div className="flex items-center gap-2 text-xl font-bold">
-                                <span className="text-primary tracking-widest uppercase text-sm">Explanation</span>
-                            </div>
-                            <p className="text-2xl leading-relaxed">{question.explanation}</p>
-                            {question.analogy && (
-                                <p className="text-xl text-slate-400 italic">💡 Analogy: {question.analogy}</p>
-                            )}
+        <div className="max-w-5xl mx-auto space-y-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <div className="space-y-12">
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-2">
+                            <div className="h-2 w-2 rounded-full bg-primary animate-ping" />
+                            <span className="text-primary font-bold text-sm uppercase tracking-[0.2em]">Active Activity</span>
                         </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                        <h3 className="text-5xl font-black leading-tight tracking-tight">{question.question}</h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4">
+                        {question.options.map((opt, i) => {
+                            const isCorrect = i === question.correct;
+                            const isSelected = selected === i;
+
+                            return (
+                                <motion.button
+                                    key={i}
+                                    whileHover={!showResult ? { scale: 1.02, x: 10 } : {}}
+                                    onClick={() => handleSelect(i)}
+                                    className={cn(
+                                        "p-8 text-left text-2xl font-bold rounded-3xl border transition-all duration-300 flex items-center justify-between group",
+                                        !showResult && "bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50",
+                                        showResult && isCorrect && "bg-primary/20 border-primary text-primary shadow-2xl shadow-primary/20",
+                                        showResult && isSelected && !isCorrect && "bg-red-500/20 border-red-500 text-red-500",
+                                        showResult && !isSelected && !isCorrect && "opacity-30 border-white/5 grayscale"
+                                    )}
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <div className={cn(
+                                            "w-10 h-10 rounded-full border flex items-center justify-center text-sm",
+                                            !showResult && "border-white/20",
+                                            showResult && isCorrect && "bg-primary border-primary text-white",
+                                            showResult && isSelected && !isCorrect && "bg-red-500 border-red-500 text-white"
+                                        )}>
+                                            {String.fromCharCode(65 + i)}
+                                        </div>
+                                        <span>{opt}</span>
+                                    </div>
+                                    {showResult && isCorrect && <CheckCircle2 className="text-primary" />}
+                                    {showResult && isSelected && !isCorrect && <XCircle className="text-red-500" />}
+                                </motion.button>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                <div className="space-y-8">
+                    {/* Learn by Doing Section */}
+                    <InteractivePlayground
+                        type={question.interactive?.type || 'slider'}
+                        label={question.interactive?.label || 'Input X'}
+                        min={question.interactive?.min || 0}
+                        max={question.interactive?.max || 20}
+                        step={question.interactive?.step || 1}
+                        unit={question.interactive?.unit || ''}
+                        question={question.question}
+                    />
+
+                    <AnimatePresence>
+                        {showResult && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="space-y-6"
+                            >
+                                <div className="glass p-10 rounded-3xl border border-white/10 space-y-6 bg-linear-to-br from-primary/5 to-accent/5">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-primary/20 rounded-lg text-primary">
+                                            <Sparkles size={20} />
+                                        </div>
+                                        <h4 className="text-xl font-bold uppercase tracking-widest text-primary">Master Insight</h4>
+                                    </div>
+                                    <p className="text-2xl leading-relaxed font-medium">{question.explanation}</p>
+                                    {question.analogy && (
+                                        <div className="pt-6 border-t border-white/10">
+                                            <p className="text-xl text-slate-400 italic leading-relaxed">
+                                                <span className="text-primary not-italic font-bold mr-2">Analogy:</span>
+                                                {question.analogy}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+            </div>
         </div>
     );
 }
