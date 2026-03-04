@@ -814,10 +814,11 @@ export default function QuizComponent({ category }: QuizComponentProps) {
             <div className="space-y-4">
                 <div className="flex justify-between items-end">
                     <span className="text-primary font-bold text-xl">Question {currentIdx + 1}/{QUESTIONS.length}</span>
-                    <div className="flex gap-1">
-                        {QUESTIONS.map((_, i) => (
-                            <div key={i} className={cn("h-1.5 w-8 rounded-full", i <= currentIdx ? "bg-primary" : "bg-slate-800")} />
-                        ))}
+                    <div className="w-48 h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div
+                            className="h-full bg-primary rounded-full transition-all duration-300"
+                            style={{ width: `${((currentIdx + 1) / QUESTIONS.length) * 100}%` }}
+                        />
                     </div>
                 </div>
                 <h3 className="text-4xl font-black leading-tight">{q.question}</h3>

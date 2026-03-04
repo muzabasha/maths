@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { usePresentation, StudentCategory } from './PresentationContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Maximize, Minimize, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -24,46 +24,54 @@ const categoryLabels: Record<StudentCategory, string> = {
 
 const quizMeta: Record<StudentCategory, { title: string; subtitle: string }> = {
     school: { title: 'The Knowledge Challenge 🎮', subtitle: 'Test your skills before the final reward!' },
-    ug: { title: 'Test Your Understanding 🎯', subtitle: 'Apply what you\'ve learned!' },
+    ug: { title: 'Test Your Understanding 🎯', subtitle: "Apply what you've learned!" },
     pg: { title: 'Advanced Concepts Quiz 🧠', subtitle: 'Challenge your advanced knowledge!' },
     research: { title: 'Expert Level Challenge 🔬', subtitle: 'Demonstrate your expertise!' },
 };
 
-function buildSlides(category: StudentCategory) {
-    const slides: React.ReactNode[] = [
-        <SlideIntro key="intro" />,
-        <SlideLemonadeStory key="lemonade" />,
-        <SlideFromWordsToEquation key="modeling" />,
-        <SlidePolynomialRecipe key="polynomial" />,
+/*
+ * Slide factory — returns a plain array of { id, render } objects.
+ * The `render` function is called at render time so React always
+ * creates fresh component instances for the active category.
+ */
+function getSlideDefinitions(category: StudentCategory) {
+    const defs: { id: string; render: () => React.ReactNode }[] = [
+        { id: 'intro', render: () => <SlideIntro /> },
+        { id: 'lemonade', render: () => <SlideLemonadeStory /> },
+        { id: 'modeling', render: () => <SlideFromWordsToEquation /> },
+        { id: 'polynomial', render: () => <SlidePolynomialRecipe /> },
     ];
 
     if (category !== 'school') {
-        slides.push(
-            <SlidePowerOfX key="powers" />,
-            <SlideDifferentiation key="diff" />,
-            <SlideSolvingStepByStep key="solve" />,
+        defs.push(
+            { id: 'powers', render: () => <SlidePowerOfX /> },
+            { id: 'diff', render: () => <SlideDifferentiation /> },
+            { id: 'solve', render: () => <SlideSolvingStepByStep /> },
         );
     }
 
     if (category === 'pg' || category === 'research') {
-        slides.push(
-            <SlideErrorAnalysis key="error" />,
-            <SlideComparison key="compare" />,
-            <SlideStability key="stability" />,
+        defs.push(
+            { id: 'error', render: () => <SlideErrorAnalysis /> },
+            { id: 'compare', render: () => <SlideComparison /> },
+            { id: 'stability', render: () => <SlideStability /> },
         );
     }
 
     const meta = quizMeta[category];
-    slides.push(
-        <Slide key="quiz" title={meta.title} subtitle={meta.subtitle}>
-            <div className="py-8">
-                <QuizComponent category={category} />
-            </div>
-        </Slide>,
-    );
+    defs.push({
+        id: 'quiz',
+        render: () => (
+            <Slide title={meta.title} subtitle={meta.subtitle}>
+                <div className="py-8">
+                    <QuizComponent category={category} />
+                </div>
+            </Slide>
+        ),
+    });
 
-    slides.push(<SlideConclusion key="conclusion" />);
-    return slides;
+    defs.push({ id: 'conclusion', render: () => <SlideConclusion /> });
+    return defs;
 }
 
 export default function PresentationView() {
@@ -73,12 +81,22 @@ export default function PresentationView() {
         toggleFullScreen, isFullScreen,
     } = usePresentation();
 
-    // Build slides fresh every render based on activeCategory
-    const slides = buildSlides(activeCategory);
-    const total = slides.length;
+    // Rebuild slide definitions whenever category changes
+    const slideDefs = useMemo(
+        () => getSlideDefinitions(activeCategory),
+        [activeCategory],
+    );
+    const total = slideDefs.length;
 
-    // Keep context in sync
+    // Sync total with context
     useEffect(() => { setTotalSlides(total); }, [total, setTotalSlides]);
+
+    // Clamp currentSlide (safety)
+    const safeSlide = Math.min(currentSlide, total - 1);
+
+    // Call the render function for the current slide
+    const currentDef = slideDefs[safeSlide];
+    const slideKey = `${activeCategory}-${currentDef.id}`;
 
     return (
         <div className={cn(
@@ -93,7 +111,9 @@ export default function PresentationView() {
                             <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Math Explorer</h1>
                         </div>
                         <div className="flex items-center gap-4">
-                            <span className="text-sm font-medium text-muted-foreground">Slide {currentSlide + 1} of {total}</span>
+                            <span className="text-sm font-medium text-muted-foreground">
+                                Slide {safeSlide + 1} of {total}
+                            </span>
                             <button onClick={toggleFullScreen} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Full Screen (F)">
                                 <Maximize size={20} />
                             </button>
@@ -123,14 +143,14 @@ export default function PresentationView() {
                 <div className="w-full max-w-7xl px-8 h-full flex flex-col justify-center">
                     <AnimatePresence mode="wait">
                         <motion.div
-                            key={`${activeCategory}-${currentSlide}`}
+                            key={slideKey}
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -20 }}
                             transition={{ duration: 0.4, ease: "easeOut" }}
                             className="w-full"
                         >
-                            {slides[currentSlide]}
+                            {currentDef.render()}
                         </motion.div>
                     </AnimatePresence>
                 </div>
@@ -140,15 +160,15 @@ export default function PresentationView() {
                 "fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-4 py-2 rounded-2xl glass border border-white/10 shadow-2xl transition-opacity duration-300",
                 isFullScreen ? "opacity-30 hover:opacity-100" : "opacity-100"
             )}>
-                <button onClick={prevSlide} disabled={currentSlide === 0} className="p-2 disabled:opacity-30 hover:bg-white/10 rounded-xl transition-colors">
+                <button onClick={prevSlide} disabled={safeSlide === 0} className="p-2 disabled:opacity-30 hover:bg-white/10 rounded-xl transition-colors">
                     <ChevronLeft size={24} />
                 </button>
                 <div className="flex items-center gap-2 px-2">
-                    {Array.from({ length: total }).map((_, i) => (
-                        <div key={i} className={cn("h-1.5 rounded-full transition-all duration-300", currentSlide === i ? "w-8 bg-primary" : "w-1.5 bg-slate-600")} />
+                    {slideDefs.map((def, i) => (
+                        <div key={def.id} className={cn("h-1.5 rounded-full transition-all duration-300", safeSlide === i ? "w-8 bg-primary" : "w-1.5 bg-slate-600")} />
                     ))}
                 </div>
-                <button onClick={nextSlide} disabled={currentSlide === total - 1} className="p-2 disabled:opacity-30 hover:bg-white/10 rounded-xl transition-colors">
+                <button onClick={nextSlide} disabled={safeSlide === total - 1} className="p-2 disabled:opacity-30 hover:bg-white/10 rounded-xl transition-colors">
                     <ChevronRight size={24} />
                 </button>
                 <div className="w-[1px] h-6 bg-white/10 mx-2" />
