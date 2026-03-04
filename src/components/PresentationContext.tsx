@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 
 export type StudentCategory = 'school' | 'ug' | 'pg' | 'research';
 
@@ -20,44 +20,60 @@ interface PresentationContextType {
 
 const PresentationContext = createContext<PresentationContextType | undefined>(undefined);
 
-export function PresentationProvider({ children, totalSlides }: { children: ReactNode; totalSlides: number }) {
+interface ProviderProps {
+    children: ReactNode;
+    slideCounts: Record<StudentCategory, number>;
+}
+
+export function PresentationProvider({ children, slideCounts }: ProviderProps) {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [revealStep, setRevealStep] = useState(0);
     const [activeCategory, setActiveCategory] = useState<StudentCategory>('school');
 
-    const nextSlide = () => {
-        if (currentSlide < totalSlides - 1) {
-            setCurrentSlide(prev => prev + 1);
-            setRevealStep(0);
-        }
-    };
+    const totalSlides = slideCounts[activeCategory];
 
-    const prevSlide = () => {
-        if (currentSlide > 0) {
-            setCurrentSlide(prev => prev - 1);
-            setRevealStep(0);
-        }
-    };
+    const nextSlide = useCallback(() => {
+        setCurrentSlide(prev => {
+            if (prev < slideCounts[activeCategory] - 1) {
+                setRevealStep(0);
+                return prev + 1;
+            }
+            return prev;
+        });
+    }, [activeCategory, slideCounts]);
 
-    const goToSlide = (index: number) => {
-        if (index >= 0 && index < totalSlides) {
-            setCurrentSlide(index);
-            setRevealStep(0);
-        }
-    };
+    const prevSlide = useCallback(() => {
+        setCurrentSlide(prev => {
+            if (prev > 0) {
+                setRevealStep(0);
+                return prev - 1;
+            }
+            return prev;
+        });
+    }, []);
 
-    const nextStep = () => {
+    const goToSlide = useCallback((index: number) => {
+        setCurrentSlide(prev => {
+            if (index >= 0 && index < slideCounts[activeCategory]) {
+                setRevealStep(0);
+                return index;
+            }
+            return prev;
+        });
+    }, [activeCategory, slideCounts]);
+
+    const nextStep = useCallback(() => {
         setRevealStep(prev => prev + 1);
-    };
+    }, []);
 
-    const handleSetActiveCategory = (category: StudentCategory) => {
+    const handleSetActiveCategory = useCallback((category: StudentCategory) => {
         setActiveCategory(category);
         setCurrentSlide(0);
         setRevealStep(0);
-    };
+    }, []);
 
-    const toggleFullScreen = () => {
+    const toggleFullScreen = useCallback(() => {
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen().catch(err => {
                 console.error(`Error attempting to enable full-screen mode: ${err.message}`);
@@ -67,7 +83,7 @@ export function PresentationProvider({ children, totalSlides }: { children: Reac
             document.exitFullscreen();
             setIsFullScreen(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -82,7 +98,7 @@ export function PresentationProvider({ children, totalSlides }: { children: Reac
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [currentSlide, totalSlides]);
+    }, [nextSlide, prevSlide, nextStep, toggleFullScreen]);
 
     useEffect(() => {
         const handleFullScreenChange = () => {

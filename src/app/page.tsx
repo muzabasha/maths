@@ -74,9 +74,16 @@ const SLIDES_BY_CATEGORY: Record<StudentCategory, React.ReactNode[]> = {
   research: RESEARCH_SLIDES,
 };
 
+const SLIDE_COUNTS: Record<StudentCategory, number> = {
+  school: SCHOOL_SLIDES.length,
+  ug: UG_SLIDES.length,
+  pg: PG_SLIDES.length,
+  research: RESEARCH_SLIDES.length,
+};
+
 export default function Home() {
   return (
-    <PresentationProvider totalSlides={SCHOOL_SLIDES.length}>
+    <PresentationProvider slideCounts={SLIDE_COUNTS}>
       <PresentationView slidesByCategory={SLIDES_BY_CATEGORY} />
     </PresentationProvider>
   );

@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePresentation, StudentCategory } from './PresentationContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Maximize, Minimize, ChevronLeft, ChevronRight, Home, Menu } from 'lucide-react';
+import { Maximize, Minimize, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface PresentationViewProps {
