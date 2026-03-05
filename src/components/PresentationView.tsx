@@ -106,7 +106,7 @@ export default function PresentationView() {
                             rel="noopener noreferrer"
                             className="px-4 py-2 rounded-lg text-sm font-medium bg-accent/20 hover:bg-accent/30 text-accent transition-all duration-200 flex items-center gap-2 border border-accent/20"
                         >
-                            Resourse person
+                            Resource Person
                             <ChevronRight size={14} className="-rotate-45" />
                         </a>
                     </div>

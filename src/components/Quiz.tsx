@@ -15,7 +15,7 @@ interface Question {
     explanation: string;
     analogy?: string;
     interactive?: {
-        type: 'slider' | 'area' | 'volume' | 'circle' | 'graph' | 'percentage' | 'speed' | 'matrix' | 'trig' | 'linear' | 'formula' | 'plot';
+        type: 'slider' | 'area' | 'volume' | 'circle' | 'graph' | 'percentage' | 'speed' | 'matrix' | 'trig' | 'linear' | 'formula' | 'plot' | 'distribution' | 'set';
         label?: string;
         min?: number;
         max?: number;
@@ -1364,7 +1364,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "It adds controlled noise to queries so that the presence of any single individual cannot be determined.",
         analogy: "Adding just enough blur to a photo so you recognize the scene but not the specific faces.",
-        interactive: { type: 'slider', label: 'Epsilon (ε)', min: 0.01, max: 10, step: 0.01 }
+        interactive: { type: 'distribution', label: 'Epsilon (ε)', min: 0.01, max: 10, step: 0.01 }
     },
     {
         id: 28,
@@ -1382,7 +1382,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "Entropy quantifies the 'surprise' or bits of information needed to describe a state.",
         analogy: "How surprised you are by a result - a coin flip has more entropy than a fixed outcome.",
-        interactive: { type: 'slider', label: 'Prob p', min: 0, max: 1, step: 0.01 }
+        interactive: { type: 'distribution', label: 'Prob p', min: 0, max: 1, step: 0.01 }
     },
     {
         id: 30,
@@ -1391,7 +1391,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "Lie groups provide a framework for studying continuous symmetry in mathematics and physics.",
         analogy: "A mathematical object that describes smooth, continuous motions like rotations.",
-        interactive: { type: 'slider', label: 'Rotation θ', min: 0, max: 360 }
+        interactive: { type: 'circle', label: 'Rotation θ', min: 0, max: 360 }
     },
     {
         id: 31,
@@ -1400,7 +1400,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "It relates the analytical index of a differential operator to the topological index of the manifold.",
         analogy: "Bridging the world of differential equations with the world of geometric shapes.",
-        interactive: { type: 'slider', label: 'Index n', min: -5, max: 5 }
+        interactive: { type: 'plot', label: 'Index n', min: -5, max: 5 }
     },
     {
         id: 32,
@@ -1409,7 +1409,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "It factors integers in polynomial time on a quantum computer, threatening RSA encryption.",
         analogy: "Finding the secret combination of a lock by exploring all possible paths simultaneously.",
-        interactive: { type: 'slider', label: 'Qubits N', min: 2, max: 1024 }
+        interactive: { type: 'distribution', label: 'Qubits N', min: 2, max: 1024 }
     },
     {
         id: 33,
@@ -1418,7 +1418,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "It breaks down the value of a state into the immediate reward plus the discounted future value.",
         analogy: "Planning your career by considering the value of today's work plus every possible future opportunity.",
-        interactive: { type: 'slider', label: 'Discount γ', min: 0, max: 1, step: 0.01 }
+        interactive: { type: 'plot', label: 'Discount γ', min: 0, max: 1, step: 0.01 }
     },
     {
         id: 34,
@@ -1427,7 +1427,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "A generator tries to create realistic data while a discriminator tries to tell real from fake.",
         analogy: "An art forger and an investigator training each other to become better and better.",
-        interactive: { type: 'slider', label: 'Noise z', min: -1, max: 1, step: 0.1 }
+        interactive: { type: 'distribution', label: 'Noise z', min: -1, max: 1, step: 0.1 }
     },
     {
         id: 35,
@@ -1436,7 +1436,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "Homology groups provide a way to distinguish between shapes based on their connectivity and 'holes'.",
         analogy: "Distinguishing a donut from a ball by counting the number of loops that can't be shrunk.",
-        interactive: { type: 'slider', label: 'Dimension p', min: 0, max: 5 }
+        interactive: { type: 'set', label: 'Dimension p', min: 0, max: 5 }
     },
     {
         id: 36,
@@ -1445,7 +1445,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "One of the Millennium Prize Problems, it asks about the fundamental nature of 3D fluid motion.",
         analogy: "Proving whether water will always flow predictably or if it can suddenly turn into chaos.",
-        interactive: { type: 'slider', label: 'Reynolds Re', min: 1, max: 10000 }
+        interactive: { type: 'graph', label: 'Reynolds Re', min: 1, max: 10000 }
     },
     {
         id: 37,
@@ -1454,7 +1454,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "It asks whether every problem whose solution can be quickly verified can also be quickly solved.",
         analogy: "Does being able to appreciate a great book mean you could have easily written it yourself?",
-        interactive: { type: 'slider', label: 'Complexity n', min: 1, max: 100 }
+        interactive: { type: 'speed', label: 'Complexity n', min: 1, max: 100 }
     },
     {
         id: 38,
@@ -1463,7 +1463,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "An autoencoder compresses input into a bottleneck and then reconstructs it to find key features.",
         analogy: "Summarizing a long complex story into a few key points, then trying to tell the whole story from just those points.",
-        interactive: { type: 'slider', label: 'Compress %', min: 1, max: 100 }
+        interactive: { type: 'percentage', label: 'Compress %', min: 1, max: 100 }
     },
     {
         id: 39,
@@ -1472,7 +1472,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "It provides a theoretical estimate of the price of European-style options over time.",
         analogy: "Calculating the fair price for a bet on the future value of a company's stock.",
-        interactive: { type: 'slider', label: 'Volatility σ', min: 0.01, max: 1, step: 0.01 }
+        interactive: { type: 'plot', label: 'Volatility σ', min: 0.01, max: 1, step: 0.01 }
     },
     {
         id: 40,
@@ -1481,7 +1481,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "Gödel proved that within any consistent formal system, there are statements that are true but cannot be proven.",
         analogy: "Even in the most perfect library, there are stories that will never be told.",
-        interactive: { type: 'slider', label: 'System Complexity', min: 1, max: 10 }
+        interactive: { type: 'set', label: 'System Complexity', min: 1, max: 10 }
     },
     {
         id: 41,
@@ -1490,7 +1490,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "It allows for the recovery of signals from far fewer samples than the Nyquist rate would suggest.",
         analogy: "Reconstructing a high-resolution photograph using only a few random pixels' worth of information.",
-        interactive: { type: 'slider', label: 'Sample Rate', min: 0.1, max: 1, step: 0.05 }
+        interactive: { type: 'distribution', label: 'Sample Rate', min: 0.1, max: 1, step: 0.05 }
     },
     {
         id: 42,
@@ -1499,7 +1499,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "These complex manifolds are used to compactify the extra dimensions required by string theory.",
         analogy: "The tiny, hidden dimensions where mathematical 'strings' vibrate to create the physics of the universe.",
-        interactive: { type: 'slider', label: 'Dimensions d', min: 2, max: 11 }
+        interactive: { type: 'volume', label: 'Dimensions d', min: 2, max: 11 }
     },
     {
         id: 43,
@@ -1517,7 +1517,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "Ricci flow is a process that deforms a manifold to smooth out its geometry, eventually revealing simple shapes.",
         analogy: "Smoothing out a lumpy, irregular ball of clay until it becomes a perfect, identifiable sphere.",
-        interactive: { type: 'slider', label: 'Flow Time t', min: 0, max: 100 }
+        interactive: { type: 'circle', label: 'Flow Time t', min: 0, max: 100 }
     },
     {
         id: 45,
@@ -1526,7 +1526,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "Einstein used differential geometry to describe gravity as the curvature of the spacetime manifold.",
         analogy: "Using the language of curved surfaces and slopes to explain how the entire universe behaves.",
-        interactive: { type: 'linear', label: 'Curvature κ', min: -10, max: 10 }
+        interactive: { type: 'graph', label: 'Curvature κ', min: -10, max: 10 }
     },
     {
         id: 46,
@@ -1535,7 +1535,7 @@ export const RESEARCH_QUESTIONS: Question[] = [
         correct: 1,
         explanation: "In a Nash Equilibrium, each player's strategy is optimal given the strategies of all other players.",
         analogy: "An 'unbeatable' standoff where everyone is doing their best given what everyone else is doing.",
-        interactive: { type: 'slider', label: 'Player A Strat', min: 0, max: 1, step: 0.1 }
+        interactive: { type: 'matrix', label: 'Player A Strat', min: 0, max: 1, step: 0.1 }
     }
 ];
 
@@ -1548,7 +1548,8 @@ export const QUESTIONS_BY_CATEGORY: Record<StudentCategory, Question[]> = {
 };
 
 interface InteractivePlaygroundProps {
-    type: 'slider' | 'area' | 'volume' | 'circle' | 'graph' | 'percentage' | 'speed' | 'matrix' | 'trig' | 'linear' | 'formula' | 'plot';
+    type: 'slider' | 'area' | 'volume' | 'circle' | 'graph' | 'percentage' | 'speed' | 'matrix' | 'trig' | 'linear' | 'formula' | 'plot' | 'distribution' | 'set';
+
     label?: string;
     min?: number;
     max?: number;
@@ -1575,6 +1576,17 @@ function InteractivePlayground({ type, label = 'Variable X', min = 0, max = 100,
         if (q.includes('sin(x)')) return Math.sin(value).toFixed(2);
         if (q.includes('cos(x)')) return Math.cos(value).toFixed(2);
         if (q.includes('square root')) return Math.sqrt(value).toFixed(2);
+
+        // Advanced Research Calculations
+        if (q.includes('entropy')) {
+            const p = Math.max(0.001, Math.min(0.999, value));
+            return (-(p * Math.log2(p) + (1 - p) * Math.log2(1 - p))).toFixed(2);
+        }
+        if (q.includes('epsilon')) return (Math.exp(value)).toFixed(2); // Privacy loss factor
+        if (q.includes('qubits')) return Math.pow(2, Math.min(20, value)).toLocaleString(); // State space size
+        if (q.includes('nash')) return (value * 0.85).toFixed(2); // Simple strat equilibrium
+        if (q.includes('bellman')) return (100 / (1 - Math.min(0.99, value))).toFixed(0); // Infinite horizon value
+
         return value;
     };
 
@@ -1590,7 +1602,27 @@ function InteractivePlayground({ type, label = 'Variable X', min = 0, max = 100,
         if (type === 'trig' || q.includes('sin(x)')) return `At an angle of ${value} radians, the value is ${res}. This cyclical behavior is used to model everything from ocean waves to sound and light.`;
         if (q.includes('2x + 3')) return `Starting at 3 (the y-intercept), we add 2 for every unit of x. At x = ${value}, we have 'moved' from the start to ${res}. The '2' is the speed or slope of this growth.`;
 
+        // Advanced Research Interpretations
+        if (q.includes('entropy')) return `At p = ${value}, the entropy is ${res} bits. Maximum uncertainty occurs at p=0.5. As p approaches 0 or 1, the outcome becomes certain and information content drops.`;
+        if (q.includes('epsilon')) return `With ε = ${value}, the relative probability of any outcome changing due to one person's data is ${res}x. Smaller ε means better privacy but more noise in the result.`;
+        if (q.includes('qubits')) return `With ${value} qubits, the quantum computer explores a Hilbert space of ${res} dimensions simultaneously. This exponential scaling is the secret to quantum advantage.`;
+        if (q.includes('bellman')) return `With a discount factor of ${value}, the long-term value of a state is ${res}. Higher discount factors make the agent care more about the distant future.`;
+        if (q.includes('manifold')) return `Visualizing data on a ${value}D manifold. Even if the raw data has 1000 features, this visualization shows the underlying simple structure where the 'truth' lives.`;
+
         return "Observe how the result shifts as you manipulate the variables. This dynamic link is the heart of mathematical modeling—turning static numbers into living relationships.";
+    };
+
+    const getDynamicLabel = () => {
+        const q = question.toLowerCase();
+        if (q.includes('area')) return 'Calculated Area';
+        if (q.includes('volume')) return 'Total Volume';
+        if (q.includes('probability') || q.includes('entropy')) return 'Likelihood / Info';
+        if (q.includes('speed') || q.includes('travels')) return 'Distance Covered';
+        if (q.includes('diameter')) return 'Full Diameter';
+        if (q.includes('derivative') || q.includes('rate')) return 'Rate of Change';
+        if (q.includes('matrix') || q.includes('determinant')) return 'Scaling Factor';
+        if (q.includes('trig') || q.includes('sin') || q.includes('cos')) return 'Phase / Value';
+        return 'Computed Result';
     };
 
     return (
@@ -1609,7 +1641,7 @@ function InteractivePlayground({ type, label = 'Variable X', min = 0, max = 100,
                 </div>
                 <div className="px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-2">
                     <Sparkles size={12} />
-                    Live Preview
+                    Live Analysis
                 </div>
             </div>
 
@@ -1664,11 +1696,13 @@ function InteractivePlayground({ type, label = 'Variable X', min = 0, max = 100,
                             key={getResult()}
                             initial={{ scale: 0.8, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
-                            className="text-8xl font-black text-white tracking-tighter drop-shadow-[0_0_40px_rgba(255,255,255,0.3)]"
+                            className="text-7xl font-black text-white tracking-tighter drop-shadow-[0_0_40px_rgba(255,255,255,0.3)] text-center break-all"
                         >
                             {getResult()}
                         </motion.div>
-                        <div className="text-primary font-black uppercase tracking-[0.4em] text-xs mt-4 bg-primary/10 px-5 py-2 rounded-full border border-primary/20 shadow-lg shadow-primary/5">Interactive Result</div>
+                        <div className="text-primary font-black uppercase tracking-[0.4em] text-[10px] mt-4 bg-primary/10 px-5 py-2 rounded-full border border-primary/20 shadow-lg shadow-primary/5 whitespace-nowrap">
+                            {getDynamicLabel()}
+                        </div>
 
                         <div className="mt-12 w-full flex justify-center items-center flex-1">
                             {/* Visual representation logic */}
@@ -1746,7 +1780,7 @@ function InteractivePlayground({ type, label = 'Variable X', min = 0, max = 100,
                                             top: '50%'
                                         }}
                                     />
-                                    <div className="absolute bottom-4 right-4 text-primary font-black text-[10px] tracking-widest">UNIT CIRCLE MODES</div>
+                                    <div className="absolute bottom-4 right-4 text-primary font-black text-[10px] tracking-widest uppercase">Unit Circle Projection</div>
                                 </div>
                             ) : type === 'percentage' || question.includes('%') ? (
                                 <div className="relative w-48 h-48 flex items-center justify-center">
@@ -1762,7 +1796,7 @@ function InteractivePlayground({ type, label = 'Variable X', min = 0, max = 100,
                                             cx="96" cy="96" r="80"
                                             fill="transparent"
                                             stroke="currentColor"
-                                            strokeWidth="8"
+                                            strokeWidth="12"
                                             strokeDasharray={502}
                                             animate={{ strokeDashoffset: 502 - (502 * Math.min(100, Math.max(0, value))) / 100 }}
                                             className="text-primary"
@@ -1772,41 +1806,109 @@ function InteractivePlayground({ type, label = 'Variable X', min = 0, max = 100,
                                     <div className="absolute text-5xl font-black text-white">{value}%</div>
                                 </div>
                             ) : type === 'matrix' || question.includes('matrix') ? (
-                                <div className="grid grid-cols-2 gap-4 p-8 bg-black/40 rounded-3xl border-2 border-primary/30 shadow-2xl relative group">
-                                    <div className="absolute -top-3 -left-3 text-[10px] font-black text-primary bg-black px-2 py-0.5 rounded border border-primary/20">HESSIAN / JACOBIAN</div>
-                                    {[1, 0, 0, 1].map((base, i) => (
-                                        <motion.div
-                                            key={i}
-                                            animate={{
-                                                scale: value > 0 ? 1 + (value / max) * 0.2 : 1,
-                                                opacity: 0.5 + (value / max) * 0.5
-                                            }}
-                                            className="w-20 h-20 flex items-center justify-center bg-primary/10 border border-primary/30 rounded-xl text-primary font-black text-2xl"
-                                        >
-                                            {(base * value).toFixed(0)}
-                                        </motion.div>
-                                    ))}
-                                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[10px] text-slate-500 font-bold uppercase tracking-widest whitespace-nowrap">det(M) = {(value * value).toFixed(0)}</div>
+                                <div className="relative p-10 bg-black/60 rounded-3xl border border-white/10 shadow-inner group">
+                                    <div className="absolute top-4 left-6 text-[10px] font-black text-primary/60 tracking-[0.3em]">OPERATIONAL TENSOR</div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-4 h-32 border-l-4 border-t-4 border-b-4 border-primary/40 rounded-l-xl" />
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {[1, 0, 0, 1].map((base, i) => (
+                                                <motion.div
+                                                    key={i}
+                                                    animate={{
+                                                        scale: value > 0 ? 1 + (value / max) * 0.1 : 1,
+                                                        background: value > max / 2 ? 'rgba(79, 70, 229, 0.2)' : 'rgba(79, 70, 229, 0.05)'
+                                                    }}
+                                                    className="w-20 h-20 flex items-center justify-center border border-primary/20 rounded-xl text-primary font-black text-3xl shadow-lg"
+                                                >
+                                                    {(base * value).toFixed(0)}
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                        <div className="w-4 h-32 border-r-4 border-t-4 border-b-4 border-primary/40 rounded-r-xl" />
+                                    </div>
+                                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-slate-900 border border-white/10 px-4 py-1.5 rounded-full text-[10px] text-primary font-bold uppercase tracking-widest whitespace-nowrap shadow-xl">
+                                        det(Linear_T) = {(value * value).toFixed(0)}
+                                    </div>
                                 </div>
-                            ) : type === 'graph' || question.includes('path') ? (
-                                <div className="w-full h-40 bg-black/40 rounded-2xl border border-white/10 relative overflow-hidden flex items-center justify-center">
-                                    <svg className="w-full h-full" viewBox="0 0 200 100">
+                            ) : type === 'graph' || type === 'plot' ? (
+                                <div className="w-full h-56 bg-black/40 rounded-2xl border border-white/10 relative overflow-hidden">
+                                    {/* Simple Graph Paper Background */}
+                                    <div className="absolute inset-0 opacity-20 pointer-events-none" style={{
+                                        backgroundImage: 'linear-gradient(#4f46e5 1px, transparent 1px), linear-gradient(90deg, #4f46e5 1px, transparent 1px)',
+                                        backgroundSize: '20px 20px'
+                                    }} />
+                                    <div className="absolute bottom-1/2 w-full h-px bg-white/20" />
+                                    <div className="absolute left-1/2 h-full w-px bg-white/20" />
+
+                                    <svg className="w-full h-full" viewBox="0 0 200 100" preserveAspectRatio="none">
                                         <motion.path
-                                            d={`M 0 50 Q 50 ${50 - value * 5} 100 50 T 200 50`}
+                                            d={type === 'plot'
+                                                ? `M 0 ${50 - (value * 0.5)} L 200 ${50 + (value * 0.5)}`
+                                                : `M 0 50 Q 50 ${50 - value * 2} 100 50 T 200 50`}
                                             fill="transparent"
                                             stroke="currentColor"
                                             strokeWidth="3"
                                             className="text-primary"
-                                            animate={{ d: `M 0 50 Q 50 ${50 - value * 5} 100 50 T 200 50` }}
+                                            animate={{
+                                                d: type === 'plot'
+                                                    ? `M 0 ${50 + (value * 0.5)} L 200 ${50 - (value * 0.5)}`
+                                                    : `M 0 50 Q 50 ${50 - value * 2} 100 50 T 200 50`
+                                            }}
                                         />
-                                        {[...Array(5)].map((_, i) => (
-                                            <circle key={i} cx={40 * i} cy="50" r="1.5" className="fill-white/20" />
-                                        ))}
                                     </svg>
                                     <div className="absolute top-2 right-2 flex items-center gap-1.5 opacity-50">
                                         <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                                        <span className="text-[10px] font-bold text-slate-400">CURVE APPROX</span>
+                                        <span className="text-[10px] font-bold text-slate-400">DYNAMIC FUNCTION PLOT</span>
                                     </div>
+                                </div>
+                            ) : type === 'volume' ? (
+                                <div className="relative w-48 h-48 perspective-[1000px]">
+                                    <motion.div
+                                        animate={{ rotateY: value * 3.6, rotateX: 20 }}
+                                        className="w-full h-full relative transform-style-3d"
+                                    >
+                                        <div className="absolute inset-0 border-2 border-primary bg-primary/20 transform translate-z-[50px]" style={{ width: Math.max(20, value * 2), height: Math.max(20, value * 2) }} />
+                                        <div className="absolute inset-0 border-2 border-primary bg-primary/20 transform -translate-z-[50px]" style={{ width: Math.max(20, value * 2), height: Math.max(20, value * 2) }} />
+                                        <div className="absolute inset-0 border-2 border-primary bg-primary/20 transform rotate-y-90 translate-z-[50px]" style={{ width: Math.max(20, value * 2), height: Math.max(20, value * 2) }} />
+                                        <div className="absolute inset-0 border-2 border-primary bg-primary/20 transform -rotate-y-90 translate-z-[50px]" style={{ width: Math.max(20, value * 2), height: Math.max(20, value * 2) }} />
+                                    </motion.div>
+                                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-[10px] font-black text-primary uppercase tracking-widest">3D Spatial Scale</div>
+                                </div>
+                            ) : type === 'distribution' || question.includes('distribution') ? (
+                                <div className="flex items-end gap-1 h-32 w-full px-4 overflow-hidden relative">
+                                    {[...Array(20)].map((_, i) => {
+                                        const mean = 10;
+                                        const sigma = value / 10 + 1;
+                                        const x = i;
+                                        const h = (Math.exp(-Math.pow(x - mean, 2) / (2 * Math.pow(sigma, 2))) * 100);
+                                        return (
+                                            <motion.div
+                                                key={i}
+                                                animate={{ height: Math.max(2, h) }}
+                                                className="flex-1 bg-primary/40 border-t border-primary/60 rounded-t-sm"
+                                            />
+                                        );
+                                    })}
+                                    <div className="absolute top-2 right-2 flex items-center gap-1.5 opacity-50">
+                                        <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                                        <span className="text-[10px] font-bold text-slate-400">GAUSSIAN SPREAD</span>
+                                    </div>
+                                </div>
+                            ) : type === 'set' || question.includes('set') ? (
+                                <div className="relative w-48 h-32 flex items-center justify-center">
+                                    <motion.div
+                                        animate={{ x: -value / 2 }}
+                                        className="w-32 h-32 rounded-full border-2 border-primary bg-primary/10 absolute flex items-center justify-center"
+                                    >
+                                        <span className="text-[10px] font-bold opacity-40">SET A</span>
+                                    </motion.div>
+                                    <motion.div
+                                        animate={{ x: value / 2 }}
+                                        className="w-32 h-32 rounded-full border-2 border-accent bg-accent/10 absolute flex items-center justify-center"
+                                    >
+                                        <span className="text-[10px] font-bold opacity-40">SET B</span>
+                                    </motion.div>
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-black text-white bg-black/40 px-2 py-1 rounded border border-white/10 uppercase tracking-widest">Intersection</div>
                                 </div>
                             ) : (
                                 <motion.div
@@ -2083,6 +2185,20 @@ export default function QuizComponent({ category }: QuizComponentProps) {
                     );
                 })}
             </div>
+
+            {q.interactive && (
+                <div className="mt-8">
+                    <InteractivePlayground
+                        type={q.interactive.type}
+                        label={q.interactive.label || 'Input X'}
+                        min={q.interactive.min || 0}
+                        max={q.interactive.max || 20}
+                        step={q.interactive.step || 1}
+                        unit={q.interactive.unit || ''}
+                        question={q.question}
+                    />
+                </div>
+            )}
 
             <AnimatePresence>
                 {showResult && (
