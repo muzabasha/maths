@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { usePresentation, StudentCategory } from './PresentationContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Maximize, Minimize, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SingleQuestion, QUESTIONS_BY_CATEGORY } from './Quiz';
+import { QUESTIONS_BY_CATEGORY } from './Quiz';
+import { buildActivitySlides, PhaseIndicator, ScoreBar, ActivitySlide, ActivityType } from './ActivityEngine';
 import Slide from './Slide';
 
 const categoryLabels: Record<StudentCategory, string> = {
@@ -15,32 +16,6 @@ const categoryLabels: Record<StudentCategory, string> = {
     research: 'Research Scholars',
 };
 
-/*
- * Slide factory — returns a plain array of { id, render } objects.
- * The `render` function is called at render time so React always
- * creates fresh component instances for the active category.
- */
-function getSlideDefinitions(category: StudentCategory) {
-    const questions = QUESTIONS_BY_CATEGORY[category];
-
-    // Map each question to its own slide
-    const defs = questions.map((q, index) => ({
-        id: `activity-${q.id}-${index}`,
-        render: () => (
-            <Slide
-                title={`Activity ${index + 1}`}
-                subtitle={categoryLabels[category]}
-            >
-                <div className="py-8">
-                    <SingleQuestion question={q} />
-                </div>
-            </Slide>
-        )
-    }));
-
-    return defs;
-}
-
 export default function PresentationView() {
     const {
         currentSlide, activeCategory, setActiveCategory,
@@ -48,22 +23,44 @@ export default function PresentationView() {
         toggleFullScreen, isFullScreen,
     } = usePresentation();
 
-    // Rebuild slide definitions whenever category changes
-    const slideDefs = useMemo(
-        () => getSlideDefinitions(activeCategory),
-        [activeCategory],
+    // Gamification state
+    const [score, setScore] = useState(0);
+    const [streak, setStreak] = useState(0);
+    const [totalAnswered, setTotalAnswered] = useState(0);
+
+    const handleScore = useCallback((delta: number) => {
+        if (delta > 0) setScore(prev => prev + delta);
+        setTotalAnswered(prev => prev + 1);
+    }, []);
+
+    const handleStreak = useCallback((correct: boolean) => {
+        setStreak(prev => correct ? prev + 1 : 0);
+    }, []);
+
+    // Reset gamification on category change
+    useEffect(() => {
+        setScore(0);
+        setStreak(0);
+        setTotalAnswered(0);
+    }, [activeCategory]);
+
+    // Build activity slides for current category
+    const questions = QUESTIONS_BY_CATEGORY[activeCategory];
+    const slideDefs: ActivitySlide[] = useMemo(
+        () => buildActivitySlides(activeCategory, questions, handleScore, handleStreak),
+        [activeCategory, questions, handleScore, handleStreak],
     );
     const total = slideDefs.length;
+    const totalQuestions = questions.length;
 
-    // Sync total with context
     useEffect(() => { setTotalSlides(total); }, [total, setTotalSlides]);
 
-    // Clamp currentSlide (safety)
     const safeSlide = Math.min(currentSlide, total - 1);
-
-    // Call the render function for the current slide
     const currentDef = slideDefs[safeSlide];
     const slideKey = `${activeCategory}-${currentDef.id}`;
+
+    // Progress through phases
+    const phases: ActivityType[] = ['explore', 'experiment', 'apply', 'assess'];
 
     return (
         <div className={cn(
@@ -78,44 +75,44 @@ export default function PresentationView() {
                             <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Math Explorer</h1>
                         </div>
                         <div className="flex items-center gap-4">
+                            <ScoreBar score={score} streak={streak} totalAnswered={totalAnswered} totalQuestions={totalQuestions} />
+                            <div className="w-px h-6 bg-white/10" />
                             <span className="text-sm font-medium text-muted-foreground">
-                                Slide {safeSlide + 1} of {total}
+                                {safeSlide + 1} / {total}
                             </span>
                             <button onClick={toggleFullScreen} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Full Screen (F)">
                                 <Maximize size={20} />
                             </button>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2 px-6 pb-3">
-                        {(Object.keys(categoryLabels) as StudentCategory[]).map((cat) => (
-                            <button
-                                key={cat}
-                                onClick={() => setActiveCategory(cat)}
-                                className={cn(
-                                    "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
-                                    activeCategory === cat
-                                        ? "bg-primary text-white shadow-lg shadow-primary/20"
-                                        : "bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-foreground"
-                                )}
-                            >{categoryLabels[cat]}</button>
-                        ))}
-                        <div className="w-px h-6 bg-white/10 mx-2" />
-                        <a
-                            href="https://scholar-sparkle-web.lovable.app"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-4 py-2 rounded-lg text-sm font-medium bg-accent/20 hover:bg-accent/30 text-accent transition-all duration-200 flex items-center gap-2 border border-accent/20"
-                        >
-                            Resource Person
-                            <ChevronRight size={14} className="-rotate-45" />
-                        </a>
+                    {/* Category tabs + Phase indicators */}
+                    <div className="flex items-center justify-between px-6 pb-3">
+                        <div className="flex items-center gap-2">
+                            {(Object.keys(categoryLabels) as StudentCategory[]).map((cat) => (
+                                <button
+                                    key={cat}
+                                    onClick={() => setActiveCategory(cat)}
+                                    className={cn(
+                                        "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                                        activeCategory === cat
+                                            ? "bg-primary text-white shadow-lg shadow-primary/20"
+                                            : "bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-foreground"
+                                    )}
+                                >{categoryLabels[cat]}</button>
+                            ))}
+                        </div>
+                        <div className="flex items-center gap-2">
+                            {phases.map(phase => (
+                                <PhaseIndicator key={phase} phase={phase} currentPhase={currentDef.phase} />
+                            ))}
+                        </div>
                     </div>
                 </header>
             )}
 
             <main className={cn(
                 "flex-1 flex flex-col items-center justify-center overflow-hidden w-full",
-                !isFullScreen && "pt-28 pb-20"
+                !isFullScreen && "pt-32 pb-20"
             )}>
                 <div className="w-full max-w-7xl px-8 h-full flex flex-col justify-center">
                     <AnimatePresence mode="wait">
@@ -133,6 +130,7 @@ export default function PresentationView() {
                 </div>
             </main>
 
+            {/* Bottom navigation */}
             <div className={cn(
                 "fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-4 py-2 rounded-2xl glass border border-white/10 shadow-2xl transition-opacity duration-300",
                 isFullScreen ? "opacity-30 hover:opacity-100" : "opacity-100"
@@ -140,11 +138,28 @@ export default function PresentationView() {
                 <button onClick={prevSlide} disabled={safeSlide === 0} className="p-2 disabled:opacity-30 hover:bg-white/10 rounded-xl transition-colors">
                     <ChevronLeft size={24} />
                 </button>
-                <div className="flex items-center gap-2 px-2">
-                    {slideDefs.map((def, i) => (
-                        <div key={def.id} className={cn("h-1.5 rounded-full transition-all duration-300", safeSlide === i ? "w-8 bg-primary" : "w-1.5 bg-slate-600")} />
-                    ))}
+
+                {/* Compact progress dots grouped by phase */}
+                <div className="flex items-center gap-1 px-2 max-w-[400px] overflow-hidden">
+                    {slideDefs.map((def, i) => {
+                        const phaseColors: Record<ActivityType, string> = {
+                            explore: 'bg-emerald-500',
+                            experiment: 'bg-amber-500',
+                            apply: 'bg-blue-500',
+                            assess: 'bg-purple-500',
+                        };
+                        return (
+                            <div
+                                key={def.id}
+                                className={cn(
+                                    "h-1.5 rounded-full transition-all duration-300",
+                                    safeSlide === i ? `w-6 ${phaseColors[def.phase]}` : `w-1 ${phaseColors[def.phase]} opacity-30`
+                                )}
+                            />
+                        );
+                    })}
                 </div>
+
                 <button onClick={nextSlide} disabled={safeSlide === total - 1} className="p-2 disabled:opacity-30 hover:bg-white/10 rounded-xl transition-colors">
                     <ChevronRight size={24} />
                 </button>
